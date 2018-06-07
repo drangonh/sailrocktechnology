@@ -3,6 +3,9 @@ import '../style/App.css';
 import '../style/view.css';
 import Header from "../components/Header"
 import {Redirect} from 'react-router-dom';
+import {Form, Icon, Input, Button, Checkbox} from 'antd';
+
+const FormItem = Form.Item;
 
 class Login extends Component {
     constructor(props) {
@@ -12,34 +15,36 @@ class Login extends Component {
         }
     }
 
-    login() {
-        this.setState({
-            redirect: true
-        })
-    }
-
     render() {
         return (
-            <div className="App basicBg textCenter">
-                <Header/>
-                <div className="flex udc basicBg center">
-                    <div className="App-intro h50 flex center">
-                        <p>管理员姓名：</p>
-                        <textarea className="h2"/>
+            <div className="login App">
+                <div className="login-form">
+                    <div className="login-logo">
+                        <span className="App-title">上海帆岩信息科技有限公司</span>
                     </div>
-                    <div className="App-intro flex h50 center">
-                        <p>管理员密码：</p>
-                        <textarea className="h2"/>
-                    </div>
-                    {
-                        this.state.redirect ?
-                            <Redirect push to="/Menu"/> :
-                            <button
-                                className="loginButton center App-intro"
-                                onClick={() => this.login()}>
-                                登陆
-                            </button>
-                    }
+                    <Form onSubmit={this.handleSubmit} style={{maxWidth: '300px'}}>
+                        <FormItem>
+                            <Input
+                                style={{width: '100%', marginTop: "2em", height: "2em"}}
+                                placeholder="请输入账号"/>
+                        </FormItem>
+                        <FormItem>
+                            <Input
+                                style={{width: '100%', marginTop: "2em", height: "2em"}}
+                                type="password"
+                                placeholder="请输入密码"/>
+                        </FormItem>
+                        <FormItem>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                className="login-form-button"
+                                style={{width: '100%', marginTop: "2em", height: "3em"}}
+                            >
+                                登录
+                            </Button>
+                        </FormItem>
+                    </Form>
                 </div>
             </div>
         );
