@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import '../style/App.css';
 import '../style/view.css';
-import Header from "../components/Header"
-import {Redirect} from 'react-router-dom';
-import {Form, Icon, Input, Button, Checkbox} from 'antd';
+
+import {Form, Input, Button} from 'antd';
 
 const FormItem = Form.Item;
 
@@ -13,6 +12,10 @@ class Login extends Component {
         this.state = {
             redirect: false
         }
+    }
+
+    login(){
+        this.props.history.push('/Menu')
     }
 
     render() {
@@ -36,12 +39,14 @@ class Login extends Component {
                         </FormItem>
                         <FormItem>
                             <Button
+                                onClick={()=>this.login()}
                                 type="primary"
                                 htmlType="submit"
                                 style={{width: '100%', marginTop: "2em", height: "2em",fontSize:"20px"}}
                             >
                                 登录
                             </Button>
+
                         </FormItem>
                     </Form>
                 </div>
