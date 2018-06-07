@@ -27,7 +27,10 @@ class Navi extends Component {
                     collapsible
                     collapsed={this.state.collapsed}
                 >
-                    <div className="logo"/>
+                    <div className="logo" style={{verticalAlign:"center"}}>
+                        <p style={{textAlign:"center",color:"red",height:"100%",paddingTop:5}}>登录用户：黄龙</p>
+                    </div>
+
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                         <Menu.Item key="1">
                             <Icon type="bars"/>
