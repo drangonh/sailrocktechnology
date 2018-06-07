@@ -1,21 +1,27 @@
 import React, {Component} from 'react';
-import logo from '../logo.svg';
 import '../style/App.css';
 import '../style/view.css';
+import Header from "../components/Header"
+import {Redirect} from 'react-router-dom';
 
 class Login extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            redirect: false
+        }
+    }
 
     login() {
-        alert(55);
+        this.setState({
+            redirect: true
+        })
     }
 
     render() {
         return (
             <div className="App basicBg textCenter">
-                <header className="App-header center">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Hello World</h1>
-                </header>
+                <Header/>
                 <div className="flex udc basicBg center">
                     <div className="App-intro h50 flex center">
                         <p>管理员姓名：</p>
@@ -25,8 +31,15 @@ class Login extends Component {
                         <p>管理员密码：</p>
                         <textarea className="h2"/>
                     </div>
-
-                    <button className="loginButton center App-intro" onClick={() => this.login()}>登陆</button>
+                    {
+                        this.state.redirect ?
+                            <Redirect push to="/Menu"/> :
+                            <button
+                                className="loginButton center App-intro"
+                                onClick={() => this.login()}>
+                                登陆
+                            </button>
+                    }
                 </div>
             </div>
         );
