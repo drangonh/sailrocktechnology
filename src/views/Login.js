@@ -38,8 +38,7 @@ class Login extends Component {
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                className="login-form-button"
-                                style={{width: '100%', marginTop: "2em", height: "3em"}}
+                                style={{width: '100%', marginTop: "2em", height: "2em",fontSize:"20px"}}
                             >
                                 登录
                             </Button>
