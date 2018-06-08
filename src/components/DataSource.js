@@ -1,4 +1,5 @@
 import React from 'react'
+import {Popconfirm} from "antd"
 import ReactDOM from 'react-dom'
 
 export const typeCol = [{
@@ -67,7 +68,14 @@ export const goodsCol = [{
     title: '删除',
     dataIndex: 'delete',
     key: 'delete',
-    width: 100
+    width: 100,
+    render: (text, record, index) => {
+        return (
+            <Popconfirm title="确定删除？" onConfirm={(record) => console.log(record)}>
+                <a href="#">删除</a>
+            </Popconfirm>
+        )
+    }
 }];
 
 export const goods = [{

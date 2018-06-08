@@ -96,7 +96,7 @@ class EditModal extends Component {
             <Modal
                 okText={"确认"}
                 cancelText={"取消"}
-                title={"编辑"}
+                title={this.props.title}
                 visible={this.props.visible}
                 onCancel={() =>
                     this.props.onCancel()

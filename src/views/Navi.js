@@ -18,9 +18,7 @@ class Navi extends Component {
     }
 
     editIcon = <Button onClick={() => {
-        this.setState({
-            editVisible: !this.state.editVisible
-        })
+        this.cancelEdit();
     }} icon="edit"/>
     deleteIcon = <Button icon="delete"/>
 
@@ -42,84 +40,6 @@ class Navi extends Component {
         name: "111",
         edit: this.editIcon,
         delete: this.deleteIcon,
-    }, {
-        key: '4',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '5',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '6',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '7',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '8',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '9',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '10',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '11',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '12',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '13',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '14',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '15',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '16',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
     }];
 
     state = {
@@ -130,11 +50,17 @@ class Navi extends Component {
         data: this.dataSource,
         key: 1
     };
-
+    modalName = "编辑";
     editModal = Form.create()
 
     /*取消编辑*/
-    cancelEdit() {
+    cancelEdit(name) {
+        if (name != "" && name) {
+            this.modalName = name
+        } else {
+            this.modalName = "编辑";
+        }
+
         this.setState({
             editVisible: !this.state.editVisible
         })
@@ -146,6 +72,7 @@ class Navi extends Component {
 
                 {/*Modal*/}
                 <EditModal
+                    title={this.modalName}
                     visible={this.state.editVisible}
                     onCancel={() => this.cancelEdit()}
                     onOk={() => this.cancelEdit()}
@@ -217,7 +144,7 @@ class Navi extends Component {
                     <Content style={{margin: '0 16px', position: "relative"}}>
                         <Button
                             onClick={() => {
-
+                                this.cancelEdit("新增")
                             }}
                             type="primary"
                             htmlType="submit"
@@ -243,7 +170,9 @@ class Navi extends Component {
                                 fontWeight: "bold"
                             }}>一级分类</p>
 
-                            <Table dataSource={this.state.data} columns={this.state.col} scroll={{y: 500}}/>
+                            <Table rowKey={(info) => {
+                                console.log(info)
+                            }} dataSource={this.state.data} columns={this.state.col} scroll={{y: 500}}/>
                         </div>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>
