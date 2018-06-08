@@ -5,8 +5,10 @@ import logo from '../logo.svg';
 import EditModal from '../components/EditModal';
 import '../style/Navi.css'
 import '../style/view.css'
+import {typeCol, goodsCol, goods} from "../components/DataSource"
 
 const {Header, Content, Sider, Footer} = Layout;
+const SubMenu = Menu.SubMenu;
 
 class Navi extends Component {
     state = {
@@ -40,24 +42,90 @@ class Navi extends Component {
         name: "111",
         edit: this.editIcon,
         delete: this.deleteIcon,
-    }];
-
-    columns = [{
-        title: '序号',
-        dataIndex: 'num',
-        key: 'name',
     }, {
-        title: '分类名称',
-        dataIndex: 'name',
-        key: 'age',
+        key: '3',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
     }, {
-        title: '编辑',
-        dataIndex: 'edit',
-        key: 'address',
+        key: '4',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
     }, {
-        title: '删除',
-        dataIndex: 'delete',
-        key: 'address',
+        key: '5',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '6',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '7',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '8',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '9',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '10',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '11',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '12',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '13',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '14',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '15',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
+    }, {
+        key: '16',
+        num: '2',
+        name: "111",
+        edit: this.editIcon,
+        delete: this.deleteIcon,
     }];
 
     editModal = Form.create()
@@ -93,27 +161,33 @@ class Navi extends Component {
                     collapsed={this.state.collapsed}
                 >
                     <div className="logo" style={{verticalAlign: "center"}}>
-                        <p style={{textAlign: "center", color: "red", height: "100%", paddingTop: 5}}>登录用户：黄龙</p>
+                        <p style={{textAlign: "center", color: "red", height: "100%", lineHeight: "32px"}}>登录用户：黄龙</p>
                     </div>
 
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                    <Menu
+                        defaultSelectedKeys={['1']}
+                        defaultOpenKeys={['sub1']}
+                        mode="inline"
+                        theme="dark"
+                        inlineCollapsed={this.state.collapsed}
+                    >
                         <Menu.Item key="1">
-                            <Icon type="bars"/>
-                            <span className="nav-text">菜单分类</span>
+                            <Icon type="pie-chart"/>
+                            <span>菜单分类</span>
                         </Menu.Item>
-                        <Menu.Item key="2">
-                            <span className="nav-text">一级分类</span>
-                        </Menu.Item>
-                        <Menu.Item key="3">
-                            <span className="nav-text">二级分类</span>
-                        </Menu.Item>
-                        <Menu.Item key="4">
-                            <span className="nav-text">三级分类</span>
-                        </Menu.Item>
+                        <SubMenu key="sub1" title={<span><Icon type="appstore"/><span>一级分类</span></span>}>
+                            <Menu.Item key="2">分类列表</Menu.Item>
+                        </SubMenu>
+                        <SubMenu key="sub2" title={<span><Icon type="appstore"/><span>二级分类</span></span>}>
+                            <Menu.Item key="3">分类列表</Menu.Item>
+                            <SubMenu key="sub3" title="Submenu">
+                                <Menu.Item key="4">分类列表</Menu.Item>
+                            </SubMenu>
+                        </SubMenu>
 
-                        <Menu.Item key="5">
-                            <span className="nav-text">四级分类</span>
-                        </Menu.Item>
+                        <SubMenu key="sub3" title={<span><Icon type="appstore"/><span>三级分类</span></span>}>
+                            <Menu.Item key="5">商品列表</Menu.Item>
+                        </SubMenu>
                     </Menu>
                 </Sider>
                 <Layout>
@@ -132,12 +206,35 @@ class Navi extends Component {
                         </span>
                     </Header>
                     <Content style={{margin: '0 16px', position: "relative"}}>
-                        <Breadcrumb style={{margin: '12px 0'}}>
-                            <Breadcrumb.Item>User</Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                        </Breadcrumb>
-                        <div className="App" style={{padding: 24, background: '#fff', marginTop: "16px"}}>
-                            <Table dataSource={this.dataSource} columns={this.columns}/>
+                        <Button
+                            onClick={() => {
+
+                            }}
+                            type="primary"
+                            htmlType="submit"
+                            style={{
+                                width: '80px',
+                                position: "absolute",
+                                right: "50px",
+                                top: "50px",
+                                height: "30px",
+                            }}
+                        >
+                            新增
+                        </Button>
+
+                        <div style={{padding: 24, background: '#fff', marginTop: "16px"}}>
+                            <p style={{
+                                width: "100%",
+                                backgroundColor: "#CCC",
+                                textAlign: "center",
+                                lineHeight: "50px",
+                                height: "50px",
+                                fontSize: "medium",
+                                fontWeight: "bold"
+                            }}>一级分类</p>
+
+                            <Table dataSource={goods} columns={goodsCol} scroll={{y: 500}}/>
                         </div>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>

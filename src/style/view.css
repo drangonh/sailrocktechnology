@@ -37,3 +37,10 @@
     height: 2.5em;
     background-color: azure;
 }
+
+/*主页左侧分类*/
+.nav-text{
+    font-size: medium;
+    font-weight: bold;
+    color: #FFFFFF;
+}

@@ -28,12 +28,12 @@ class Login extends Component {
                     <Form onSubmit={this.handleSubmit} style={{maxWidth: '300px'}}>
                         <FormItem>
                             <Input
-                                style={{width: '100%', marginTop: "2em", height: "2em"}}
+                                style={{width: '100%', marginTop: "1em", height: "2em"}}
                                 placeholder="请输入账号"/>
                         </FormItem>
                         <FormItem>
                             <Input
-                                style={{width: '100%', marginTop: "2em", height: "2em"}}
+                                style={{width: '100%', marginTop: "1em", height: "2em"}}
                                 type="password"
                                 placeholder="请输入密码"/>
                         </FormItem>
@@ -42,7 +42,7 @@ class Login extends Component {
                                 onClick={()=>this.login()}
                                 type="primary"
                                 htmlType="submit"
-                                style={{width: '100%', marginTop: "2em", height: "2em",fontSize:"20px"}}
+                                style={{width: '100%', marginTop: "1em", height: "2em",fontSize:"20px"}}
                             >
                                 登录
                             </Button>
