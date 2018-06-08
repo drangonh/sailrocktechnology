@@ -1,4 +1,4 @@
-import {Icon, Form, Input,Modal} from 'antd';
+import {Icon, Form, Input, Modal, Upload, message, Select} from 'antd';
 import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import logo from '../logo.svg';
@@ -8,6 +8,62 @@ import '../style/view.css'
 const FormItem = Form.Item;
 
 class EditModal extends Component {
+    state = {
+        loading: false,
+    };
+
+    /*
+     *上传之前判断类型，返回true或者false；或者返回一个promise
+     */
+    beforeUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        if (!isJPG) {
+            message.error('You can only upload JPG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+        return isJPG && isLt2M;
+    }
+
+    /*上传图片并且改变显示*/
+    handleChange = (info) => {
+        if (info.file.status === 'uploading') {
+            this.setState({loading: true});
+            return;
+        }
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+            this.getBase64(info.file.originFileObj, imageUrl => this.setState({
+                imageUrl,
+                loading: false,
+            }));
+        }
+    }
+
+    /*转base64*/
+    getBase64(img, callback) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(img);
+    }
+
+    /*选择框*/
+    changeHot(value) {
+        console.log(`selected ${value}`);
+    }
+
+    /*取消选中和取消输入框*/
+    cancelAllMsg() {
+
+    }
+
+    /*提交接口*/
+    commitMsg() {
+
+    }
+
     render() {
         const {getFieldDecorator} = this.props.form;
         const formItemLayout = {
@@ -26,6 +82,15 @@ class EditModal extends Component {
                 offset: 7
             }
         };
+
+        const uploadButton = (
+            <div>
+                <Icon type={this.state.loading ? 'loading' : 'plus'}/>
+                <div className="ant-upload-text">Upload</div>
+            </div>
+        );
+        const imageUrl = this.state.imageUrl;
+        const Option = Select.Option;
 
         return (
             <Modal
@@ -55,45 +120,56 @@ class EditModal extends Component {
                                 <Input className="content_style" addonBefore={<Icon type="mobile"/>}/>
                             )}
                         </FormItem>
+
                         <FormItem
                             {...formItemLayout}
                             label="市场价格"
-                            hasFeedback
                         >
-                            {getFieldDecorator('num', {
+                            {getFieldDecorator('mallPrice', {
                                 rules: [{
-                                    type: 'number'
-                                }, {
-                                    required: true, message: '请输入市场价格！'
+                                    required: true, message: '请输入市场价格!'
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="mail"/>}/>
+                                <Input className="content_style" addonBefore={<Icon type="mobile"/>}/>
                             )}
                         </FormItem>
+
                         <FormItem
                             {...formItemLayout}
                             label="商品图片"
                         >
-                            {getFieldDecorator('username', {
-                                rules: [{required: true, message: '请输入您的账号'}]
+                            {getFieldDecorator('image', {
+                                rules: [{required: true, message: '请选择商品图片！'}]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="user"/>}/>
+                                <Upload
+                                    name="avatar"
+                                    listType="picture-card"
+                                    className="avatar-uploader"
+                                    showUploadList={false}
+                                    action="//jsonplaceholder.typicode.com/posts/"   //上传的地址，必填参数
+                                    beforeUpload={(file) => this.beforeUpload(file)}
+                                    onChange={(info) => this.handleChange(info)}
+                                >
+                                    {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
+                                </Upload>
                             )}
                         </FormItem>
                         <FormItem
                             {...formItemLayout}
                             label="所属的二级分类"
-                            hasFeedback
                         >
-                            {getFieldDecorator('password', {
+                            {getFieldDecorator('class', {
                                 rules: [{
                                     required: true, message: '请选择所属的二级分类'
                                 }, {
-                                    validator: this.checkConfirm
+                                    validator: this.checkPassword
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="lock"/>} type="password"
-                                       onBlur={this.handlePasswordBlur}/>
+                                <Select defaultValue="翡翠" style={{width: 120}}
+                                        onChange={(value) => this.changeHot(value)}>
+                                    <Option value="jack">南红</Option>
+                                    <Option value="lucy">玉雕</Option>
+                                </Select>
                             )}
                         </FormItem>
                         <FormItem
@@ -101,7 +177,7 @@ class EditModal extends Component {
                             label="商品描述"
                             hasFeedback
                         >
-                            {getFieldDecorator('confirm', {
+                            {getFieldDecorator('detail', {
                                 rules: [{
                                     required: true, message: '请填写商品描述'
                                 }, {
@@ -117,14 +193,18 @@ class EditModal extends Component {
                             label="是否热门"
                             hasFeedback
                         >
-                            {getFieldDecorator('confirm', {
+                            {getFieldDecorator('hot', {
                                 rules: [{
                                     required: true, message: '请选择是否热门'
                                 }, {
                                     validator: this.checkPassword
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="lock"/>} type="password"/>
+                                <Select defaultValue="否" style={{width: 120}}
+                                        onChange={(value) => this.changeHot(value)}>
+                                    <Option value="jack">是</Option>
+                                    <Option value="lucy">否</Option>
+                                </Select>
                             )}
                         </FormItem>
 
@@ -133,7 +213,7 @@ class EditModal extends Component {
                             label="商城价格"
                             hasFeedback
                         >
-                            {getFieldDecorator('confirm', {
+                            {getFieldDecorator('price', {
                                 rules: [{
                                     required: true, message: '请输入商城价格'
                                 }, {
@@ -149,7 +229,7 @@ class EditModal extends Component {
                             label="库存量"
                             hasFeedback
                         >
-                            {getFieldDecorator('confirm', {
+                            {getFieldDecorator('storage', {
                                 rules: [{
                                     required: true, message: '请输入库存量'
                                 }, {
