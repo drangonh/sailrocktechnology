@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import '../style/App.css';
 import '../style/view.css';
-
+import createHistory from 'history/createHashHistory'
 import {Form, Input, Button} from 'antd';
 
 const FormItem = Form.Item;
-
+const history = createHistory();
 class Login extends Component {
     constructor(props) {
         super(props)
@@ -15,7 +15,7 @@ class Login extends Component {
     }
 
     login(){
-        this.props.history.push('/Menu')
+        history.push('/index')
     }
 
     render() {
