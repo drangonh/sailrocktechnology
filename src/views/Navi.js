@@ -11,12 +11,6 @@ const {Header, Content, Sider, Footer} = Layout;
 const SubMenu = Menu.SubMenu;
 
 class Navi extends Component {
-    state = {
-        collapsed: false,
-        mode: 'inline',
-        editVisible: false
-    };
-
     toggle = () => {
         // this.setState({
         //     collapsed: !this.state.collapsed,
@@ -128,32 +122,34 @@ class Navi extends Component {
         delete: this.deleteIcon,
     }];
 
+    state = {
+        collapsed: false,
+        mode: 'inline',
+        editVisible: false,
+        col: typeCol,
+        data: this.dataSource,
+        key: 1
+    };
+
     editModal = Form.create()
+
+    /*取消编辑*/
+    cancelEdit() {
+        this.setState({
+            editVisible: !this.state.editVisible
+        })
+    }
 
     render() {
         return (
             <Layout className="App">
 
                 {/*Modal*/}
-                <Modal
-                    okText={"确认"}
-                    cancelText={"取消"}
-                    title={"编辑"}
+                <EditModal
                     visible={this.state.editVisible}
-                    onCancel={() =>
-                        this.setState({
-                            editVisible: !this.state.editVisible
-                        })}
-                    onOk={() =>
-                        this.setState({
-                            editVisible: !this.state.editVisible
-                        })}
-                >
-                    <div style={{minHeight: "500px"}}>
-
-                        <EditModal/>
-                    </div>
-                </Modal>
+                    onCancel={() => this.cancelEdit()}
+                    onOk={() => this.cancelEdit()}
+                />
 
                 <Sider
                     trigger={null}
@@ -170,23 +166,36 @@ class Navi extends Component {
                         mode="inline"
                         theme="dark"
                         inlineCollapsed={this.state.collapsed}
+                        onSelect={(item) => {
+                            if (item.key == 4) {
+                                this.setState({
+                                    col: goodsCol,
+                                    data: goods
+                                })
+                            } else {
+                                this.setState({
+                                    col: typeCol,
+                                    data: this.dataSource
+                                })
+                            }
+                        }}
                     >
-                        <Menu.Item key="1">
+                        <Menu.Item key="0">
                             <Icon type="pie-chart"/>
                             <span>菜单分类</span>
                         </Menu.Item>
                         <SubMenu key="sub1" title={<span><Icon type="appstore"/><span>一级分类</span></span>}>
-                            <Menu.Item key="2">分类列表</Menu.Item>
+                            <Menu.Item key="1">分类列表</Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub2" title={<span><Icon type="appstore"/><span>二级分类</span></span>}>
-                            <Menu.Item key="3">分类列表</Menu.Item>
+                            <Menu.Item key="2">分类列表</Menu.Item>
                             <SubMenu key="sub3" title="Submenu">
-                                <Menu.Item key="4">分类列表</Menu.Item>
+                                <Menu.Item key="3">分类列表</Menu.Item>
                             </SubMenu>
                         </SubMenu>
 
                         <SubMenu key="sub3" title={<span><Icon type="appstore"/><span>三级分类</span></span>}>
-                            <Menu.Item key="5">商品列表</Menu.Item>
+                            <Menu.Item key="4">商品列表</Menu.Item>
                         </SubMenu>
                     </Menu>
                 </Sider>
@@ -234,7 +243,7 @@ class Navi extends Component {
                                 fontWeight: "bold"
                             }}>一级分类</p>
 
-                            <Table dataSource={goods} columns={goodsCol} scroll={{y: 500}}/>
+                            <Table dataSource={this.state.data} columns={this.state.col} scroll={{y: 500}}/>
                         </div>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>
