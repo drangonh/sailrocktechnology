@@ -6,7 +6,7 @@ import EditModal from '../components/EditModal';
 import '../style/Navi.css'
 import '../style/view.css'
 import {typeCol, goodsCol, goods} from "../components/DataSource"
-
+import {fetchGet,fetchPost} from "../client"
 const {Header, Content, Sider, Footer} = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -64,6 +64,11 @@ class Navi extends Component {
         this.setState({
             editVisible: !this.state.editVisible
         })
+    }
+
+    /*获取一级分类列表*/
+    getOneList() {
+        fetchGet("/shop/manager/top_category/get_all","/1/10")
     }
 
     render() {
