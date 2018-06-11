@@ -6,7 +6,8 @@ import EditModal from '../components/EditModal';
 import '../style/Navi.css'
 import '../style/view.css'
 import {typeCol, goodsCol, goods} from "../components/DataSource"
-import {fetchGet,fetchPost} from "../client"
+import {fetchGet, fetchPost} from "../client"
+
 const {Header, Content, Sider, Footer} = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -26,18 +27,6 @@ class Navi extends Component {
         key: '1',
         num: '1',
         name: "咖啡豆",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '2',
-        num: '2',
-        name: "111",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }, {
-        key: '3',
-        num: '2',
-        name: "111",
         edit: this.editIcon,
         delete: this.deleteIcon,
     }];
@@ -66,9 +55,32 @@ class Navi extends Component {
         })
     }
 
+    componentDidMount() {
+        this.getOneList();
+    }
+
     /*获取一级分类列表*/
-    getOneList() {
-        fetchGet("/shop/manager/top_category/get_all","/1/10")
+    async getOneList() {
+        const res = await fetchGet("/shop/manager/top_category/get_all/1/10", "");
+        console.log(res);
+    }
+
+    /*获取二级分类列表*/
+    async getTwoList() {
+        const res = await fetchGet("/shop/manager/get_all/1/10", "");
+        console.log(res);
+    }
+
+    /*获取三级分类列表*/
+    async getThreeList() {
+        const res = await fetchGet("shop/manager/second_category/get_all/1/10", "");
+        console.log(res);
+    }
+
+    /*获取产品列表*/
+    async getGoodsList() {
+        const res = await fetchGet("shop/manager/product/get_all/1/10", "");
+        console.log(res);
     }
 
     render() {

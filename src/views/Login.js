@@ -5,7 +5,8 @@ import createHistory from 'history/createHashHistory'
 import {Form, Input, Button} from 'antd';
 import {postLast, get, fetchGet, fetchPost} from "../client"
 import axios from "axios"
-
+import {getAjax, postAjax} from "../client/ajax"
+import Cookies from "js-cookie"
 const FormItem = Form.Item;
 const history = createHistory();
 
@@ -22,13 +23,16 @@ class Login extends Component {
 
     async login() {
         const params = {user_name: "11", pwd: "11"}
+        //postAjax("/shop/manager/user/login/" + this.userName + "/" + this.pwd + "", {});
+
         const data = await fetchPost("/shop/manager/user/login/" + this.userName + "/" + this.pwd + "", {});
-        console.log(data);
-        if (data.status) {
-            history.push('/index')
-        } else {
-            alert(data.msg);
-        }
+        // console.log(data);
+        /* if (data.status) {
+             history.push('/index')
+         } else {
+             alert(data.msg);
+         }*/
+        postLast("/shop/manager/user/login/" + this.userName + "/" + this.pwd + "", {});
     }
 
     handleChange(event) {
