@@ -108,7 +108,8 @@ export default class OneContent extends Component {
         let res = await fetchPost("/shop/manager/top_category/update", JSON.stringify(param));
         this.getOneList();
         this.setState({
-            selectedRowKeys: []
+            selectedRowKeys: [],
+            editOne: !this.state.editOne
         })
     }
 
