@@ -10,142 +10,27 @@ import {typeCol, goodsCol, goods} from "../components/DataSource"
 import {fetchGet, fetchPost} from "../client"
 import {getOneList} from "../http/data";
 import OneContent from "../components/content/OneContent";
+import TwoContent from "../components/content/TwoContent";
 
 const {Header, Content, Sider, Footer} = Layout;
 const SubMenu = Menu.SubMenu;
 let allListArr = [];
 
 class Navi extends Component {
-    toggle = () => {
-        // this.setState({
-        //     collapsed: !this.state.collapsed,
-        // });
-    }
-
-    editIcon = <Button onClick={() => {
-        this.cancelEdit();
-    }} icon="edit"/>
-    deleteIcon = <Button icon="delete"/>
-
-    dataSource = [];
-
     state = {
         collapsed: false,
         mode: 'inline',
-        editVisible: false,
-        editOne: false,
-        editTwo: false,
-        editTre: false,
-        editGoods: false,
-        col: typeCol,
-        data: this.dataSource,
         key: 1
     };
     modalName = "编辑";
     editModal = Form.create()
 
-    /*商品取消编辑*/
-    cancelEdit(name) {
-        if (name != "" && name) {
-            this.modalName = name
-        } else {
-            this.modalName = "编辑";
-        }
-
-        this.setState({
-            editVisible: !this.state.editVisible
-        })
-    }
-
     componentDidMount() {
-    }
-
-    /*获取一级分类列表*/
-
-    /*列表数据处理*/
-    async getList() {
-        const res = await fetchGet("/shop/manager/top_category/get_all", "/1/10");
-        console.log("11111111111");
-        console.log(res);
-        if (res.status && res.data.data.length != 0) {
-            const arr = res.data.data;
-            let data = [];
-            arr.map((item, index) => {
-                data.push({
-                    key: index + 1,
-                    num: index + 1,
-                    name: item.tcname,
-                    edit: this.editIcon,
-                    delete: this.deleteIcon,
-                })
-            });
-            allListArr.push(data);
-            this.setState({
-                data: data
-            })
-        }
-    }
-
-    /*获取二级分类列表*/
-    async getTwoList() {
-        const res = await fetchGet("/shop/manager/get_all", "/1/10");
-        console.log("22222222222222");
-        console.log(res);
-        if (res.status && res.data.data.length != 0) {
-            const arr = res.data.data;
-            let data = [];
-            arr.map((item, index) => {
-                data.push({
-                    key: index + 1,
-                    num: index + 1,
-                    name: item.tcname,
-                    edit: this.editIcon,
-                    delete: this.deleteIcon,
-                })
-            });
-            allListArr.push(data);
-        }
-
-    }
-
-    /*获取三级分类列表*/
-    async getThreeList() {
-        const res = await fetchGet("shop/manager/second_category/get_all", "/1/10");
-        console.log("333333333333333");
-        console.log(res);
-        if (res.status && res.data.data.length != 0) {
-            const arr = res.data.data;
-            let data = [];
-            arr.map((item, index) => {
-                data.push({
-                    key: index + 1,
-                    num: index + 1,
-                    name: item.tcname,
-                    edit: this.editIcon,
-                    delete: this.deleteIcon,
-                })
-            });
-            allListArr.push(data);
-        }
-    }
-
-    /*获取产品列表*/
-    async getGoodsList() {
-        const res = await fetchGet("shop/manager/product/get_all/1/10", "");
-        console.log(res);
     }
 
     render() {
         return (
             <Layout className="App">
-
-                {/*Modal*/}
-                <EditModal
-                    title={this.modalName}
-                    visible={this.state.editVisible}
-                    onCancel={() => this.cancelEdit()}
-                    onOk={() => this.cancelEdit()}
-                />
 
                 <Sider
                     trigger={null}
@@ -163,17 +48,9 @@ class Navi extends Component {
                         theme="dark"
                         inlineCollapsed={this.state.collapsed}
                         onSelect={(item) => {
-                            if (item.key == 4) {
-                                this.setState({
-                                    col: goodsCol,
-                                    data: goods
-                                })
-                            } else {
-                                this.setState({
-                                    col: typeCol,
-                                    data: allListArr[item.key]
-                                })
-                            }
+                            this.setState({
+                                key: item.key
+                            })
                         }}
                     >
                         <Menu.Item key="0">
@@ -185,13 +62,17 @@ class Navi extends Component {
                         </SubMenu>
                         <SubMenu key="sub2" title={<span><Icon type="appstore"/><span>二级分类</span></span>}>
                             <Menu.Item key="2">分类列表</Menu.Item>
-                            <SubMenu key="sub3" title="Submenu">
+                            {/* <SubMenu key="sub3" title="Submenu">
                                 <Menu.Item key="3">分类列表</Menu.Item>
-                            </SubMenu>
+                            </SubMenu>*/}
                         </SubMenu>
 
                         <SubMenu key="sub3" title={<span><Icon type="appstore"/><span>三级分类</span></span>}>
-                            <Menu.Item key="4">商品列表</Menu.Item>
+                            <Menu.Item key="3">分类列表</Menu.Item>
+                        </SubMenu>
+
+                        <SubMenu key="sub4" title={<span><Icon type="appstore"/><span>产品管理</span></span>}>
+                            <Menu.Item key="4">产品列表</Menu.Item>
                         </SubMenu>
                     </Menu>
                 </Sider>
@@ -210,7 +91,9 @@ class Navi extends Component {
                             <img src={logo} className="App-logo" alt="logo"/>
                         </span>
                     </Header>
-                    <OneContent/>
+                    {this.state.key == 1 ? <OneContent/> : null}
+                    {this.state.key == 2 ? <TwoContent/> : null}
+
                     <Footer style={{textAlign: 'center'}}>
                         {new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate()}&nbsp;&nbsp;&nbsp;&nbsp;{new Date().toLocaleTimeString()}
                     </Footer>
