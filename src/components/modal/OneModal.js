@@ -66,7 +66,7 @@ class OneModal extends Component {
         );
         const imageUrl = this.state.imageUrl;
         const Option = Select.Option;
-
+        // alert(JSON.stringify(this.props.value))
         return (
             <Modal
                 okText={"确认"}
@@ -92,10 +92,13 @@ class OneModal extends Component {
                                     required: true, message: '请输入分类名称!'
                                 }]
                             })(
-                                <Input className="content_style"
-                                       onChange={(event) => {
-                                           this.name = event.target.value;
-                                       }} addonBefore={<Icon type="mobile"/>}/>
+                                <Input
+                                    placeholder={this.props.value ? this.props.value.tcname : ""}
+                                    onChange={(event) => {
+                                        this.name = event.target.value;
+                                    }}
+                                    addonBefore={<Icon type="mobile"/>}
+                                />
                             )}
                         </FormItem>
                     </Form>

@@ -35,8 +35,7 @@ export default class OneContent extends Component {
                 data.push({
                     key: index + 1,
                     num: index + 1,
-                    name: item.tcname,
-                    edit: this.editIcon,
+                    name: item.tcname
                 })
             });
             allListArr = arr;
@@ -48,12 +47,20 @@ export default class OneContent extends Component {
 
     /*一级分类*/
     cancleOne(name) {
-        if (name != "" && name) {
-            this.modalName = name
-        } else {
-            this.modalName = "编辑";
-        }
+        this.modalName = name
 
+        if (name == "编辑") {
+            const {selectedRowKeys} = this.state;
+            if (selectedRowKeys.length == 0) {
+                message.info("请勾选要修改的项");
+                return
+            } else if (selectedRowKeys.length == 1) {
+
+            } else {
+                message.info("每次只能修改一项！");
+                return
+            }
+        }
         this.setState({
             editOne: !this.state.editOne
         })
@@ -75,7 +82,7 @@ export default class OneContent extends Component {
     async deleteOne() {
         const {selectedRowKeys} = this.state;
         if (selectedRowKeys.length == 0) {
-            alert("请勾选要删除的项");
+            message.info("请勾选要删除的项");
         } else if (selectedRowKeys.length == 1) {
             const id = selectedRowKeys[0];
             let res = await fetchGet("/shop/manager/top_category/delete", "/" + allListArr[id - 1].id + "");
@@ -84,9 +91,25 @@ export default class OneContent extends Component {
                 selectedRowKeys: []
             })
         } else {
-            alert("只能删除一项,防止误删！");
+            message.info("只能删除一项,防止误删！");
         }
 
+    }
+
+    /*编辑分类*/
+    async editType(name) {
+        const {selectedRowKeys} = this.state;
+        const id = selectedRowKeys[0];
+        const param = {
+            "tcname": name.tcname,
+            "id": allListArr[id - 1].id
+        };
+
+        let res = await fetchPost("/shop/manager/top_category/update", JSON.stringify(param));
+        this.getOneList();
+        this.setState({
+            selectedRowKeys: []
+        })
     }
 
     onSelectChange = (selectedRowKeys) => {
@@ -104,6 +127,7 @@ export default class OneContent extends Component {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
+        const id = selectedRowKeys[0];
         return (
             <Content style={{margin: '0 16px', position: "relative"}}>
                 {/*一级modal*/}
@@ -115,49 +139,9 @@ export default class OneContent extends Component {
                             editOne: !this.state.editOne
                         })
                     }}
-                    onOk={(param) => this.addType(param)}
+                    value={allListArr[id - 1]}
+                    onOk={(param) => this.modalName == "新增" ? this.addType(param) : this.editType(param)}
                 />
-
-                <Button
-                    onClick={() => {
-                        this.cancleOne("新增")
-                    }}
-                    type="primary"
-                    htmlType="submit"
-                    style={{
-                        width: '80px',
-                        position: "absolute",
-                        right: "50px",
-                        top: "50px",
-                        height: "30px",
-                    }}
-                >
-                    新增
-                </Button>
-
-
-                <Popconfirm
-                    placement="left"
-                    title={"该项将会被删除，请确认!"}
-                    onConfirm={() => this.deleteOne()} okText="确定"
-                    cancelText="取消">
-                    <Button
-                        /*  onClick={() => {
-                              this.deleteOne();
-                          }}*/
-                        type="primary"
-                        htmlType="submit"
-                        style={{
-                            width: '80px',
-                            position: "absolute",
-                            right: "150px",
-                            top: "50px",
-                            height: "30px",
-                        }}
-                    >
-                        删除
-                    </Button>
-                </Popconfirm>
 
                 <div style={{padding: 24, background: '#fff', marginTop: "16px"}}>
                     <p style={{
@@ -169,6 +153,57 @@ export default class OneContent extends Component {
                         fontSize: "medium",
                         fontWeight: "bold"
                     }}>一级分类</p>
+
+                    <div style={{display: "flex", flexDirection: "row", marginBottom: "16px"}}>
+                        <Button
+                            onClick={() => {
+                                this.cancleOne("新增")
+                            }}
+                            type="primary"
+                            htmlType="submit"
+                            style={{
+                                width: '80px',
+                                height: "30px",
+                            }}
+                        >
+                            新增
+                        </Button>
+
+                        <Popconfirm
+                            placement="left"
+                            title={"该项将会被重新编辑，请确认!"}
+                            onConfirm={() => this.deleteOne()}
+                            okText="确定"
+                            cancelText="取消">
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                style={{
+                                    width: '80px',
+                                    height: "30px",
+                                    marginLeft: "20px"
+                                }}
+                            >
+                                删除
+                            </Button>
+                        </Popconfirm>
+
+
+                        <Button
+                            onClick={() => {
+                                this.cancleOne("编辑")
+                            }}
+                            type="primary"
+                            htmlType="submit"
+                            style={{
+                                width: '80px',
+                                height: "30px",
+                                marginLeft: "20px"
+                            }}
+                        >
+                            编辑
+                        </Button>
+                    </div>
 
                     <Table
                         rowSelection={rowSelection}

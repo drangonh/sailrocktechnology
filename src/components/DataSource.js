@@ -11,10 +11,6 @@ export const typeCol = [{
     title: '分类名称',
     dataIndex: 'name',
     key: 'name', width: 100
-}, {
-    title: '编辑',
-    dataIndex: 'edit',
-    key: 'address', width: 100
 }];
 
 
