@@ -12,10 +12,11 @@ class OneModal extends Component {
         loading: false,
     };
     name = "";
+    typeId = 0;
 
     /*选择框*/
     changeHot(value) {
-        console.log(`selected ${value}`);
+        this.typeId = this.props.oneType.dataOne[value.replace("oneType", "")].id
     }
 
 
@@ -55,9 +56,14 @@ class OneModal extends Component {
                 onCancel={() =>
                     this.props.onCancel()
                 }
-                onOk={() =>
-                    this.props.onOk({"tcname": this.name})
-                }
+                onOk={() => {
+                    this.props.onOk({
+                        "cname": this.name,
+                        "discount": 0,
+                        "privilegetime": new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
+                        "tcid": this.typeId
+                    })
+                }}
             >
                 <div style={{minHeight: "200px"}}>
 
@@ -97,8 +103,15 @@ class OneModal extends Component {
                                     placeholder="请选择分类！"
                                     onChange={(value) => this.changeHot(value)
                                     }>
-                                    <Option value="jack">南红</Option>
-                                    <Option value="lucy">玉雕</Option>
+
+                                    {this.props.oneType.dataOne.map((item, index) => {
+                                        return <Option
+                                            key={"oneType" + index}
+                                            value={"oneType" + index}
+                                        >
+                                            {item.tcname}
+                                        </Option>
+                                    })}
                                 </Select>
                             )}
                         </FormItem>

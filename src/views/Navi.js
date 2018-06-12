@@ -14,6 +14,8 @@ import TwoContent from "../components/content/TwoContent";
 
 const {Header, Content, Sider, Footer} = Layout;
 const SubMenu = Menu.SubMenu;
+
+/*记录所有的分类数据*/
 let allListArr = [];
 
 class Navi extends Component {
@@ -26,6 +28,10 @@ class Navi extends Component {
     editModal = Form.create()
 
     componentDidMount() {
+    }
+
+    getAllData(obj) {
+        allListArr.push(obj);
     }
 
     render() {
@@ -91,11 +97,22 @@ class Navi extends Component {
                             <img src={logo} className="App-logo" alt="logo"/>
                         </span>
                     </Header>
-                    {this.state.key == 1 ? <OneContent/> : null}
-                    {this.state.key == 2 ? <TwoContent/> : null}
+                    {
+                        this.state.key == 1 ?
+                            <OneContent getAllData={(arr) => this.getAllData(arr)}/> :
+                            null
+                    }
+
+                    {
+                        this.state.key == 2 ?
+                            <TwoContent oneType={allListArr[0]} getAllData={(arr) => this.getAllData(arr)}/>
+                            :
+                            null
+                    }
 
                     <Footer style={{textAlign: 'center'}}>
-                        {new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate()}&nbsp;&nbsp;&nbsp;&nbsp;{new Date().toLocaleTimeString()}
+                        {new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate()}
+                        &nbsp;&nbsp;&nbsp;&nbsp;{new Date().toLocaleTimeString()}
                     </Footer>
                 </Layout>
             </Layout>

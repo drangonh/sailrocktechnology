@@ -39,6 +39,7 @@ export default class OneContent extends Component {
                 })
             });
             allListArr = arr;
+            this.props.getAllData({"dataOne": arr});
             this.setState({
                 data: data
             })
@@ -68,14 +69,22 @@ export default class OneContent extends Component {
 
     /*增加分类*/
     async addType(param) {
-        const res = await fetchPost("/shop/manager/top_category/add", JSON.stringify(param));
-        if (res.status) {
-            this.getOneList();
+        if (param.cname == "") {
+            message.info("请输入分类名称！");
             this.setState({
                 editOne: !this.state.editOne,
             })
+            return
         }
-
+        const res = await fetchPost("/shop/manager/add", JSON.stringify(param));
+        if (res.status) {
+            this.getOneList();
+        } else {
+            message.info("新增失败！");
+        }
+        this.setState({
+            editOne: !this.state.editOne,
+        })
     }
 
     /*删除分类*/
@@ -133,6 +142,7 @@ export default class OneContent extends Component {
             <Content style={{margin: '0 16px', position: "relative"}}>
                 {/*一级modal*/}
                 <TwoModal
+                    oneType={this.props.oneType}
                     title={this.modalName}
                     visible={this.state.editOne}
                     onCancel={() => {

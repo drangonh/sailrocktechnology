@@ -39,6 +39,8 @@ export default class OneContent extends Component {
                 })
             });
             allListArr = arr;
+            //因为这个数据在第二个分类里面需要用到，所以传给父级
+            this.props.getAllData({"dataOne": arr});
             this.setState({
                 data: data
             })
