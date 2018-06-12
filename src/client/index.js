@@ -26,7 +26,7 @@ export function fetchGet(url, params) {
                 }
             })
             .then((response) => {
-                console.log(response);
+                // console.log(response);
                 resolve(response);
             })
             .catch((err) => {
