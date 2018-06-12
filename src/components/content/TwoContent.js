@@ -112,14 +112,18 @@ export default class OneContent extends Component {
 
     /*编辑分类*/
     async editType(name) {
+        alert(JSON.stringify(name));
         const {selectedRowKeys} = this.state;
         const id = selectedRowKeys[0];
         const param = {
-            "tcname": name.tcname,
-            "id": allListArr[id - 1].id
+            "cname": name.cname,
+            "cid": name.tcid,
+            "discount": 0,
+            "privilegetime": "2018-6-12",
+            "tcid": 0,
         };
 
-        let res = await fetchPost("/shop/manager/top_category/update", JSON.stringify(param));
+        let res = await fetchPost("/shop/manager/update", JSON.stringify(param));
         this.getOneList();
         this.setState({
             selectedRowKeys: [],

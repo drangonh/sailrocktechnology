@@ -78,7 +78,7 @@ class OneModal extends Component {
                                 }]
                             })(
                                 <Input
-                                    placeholder={this.props.value ? this.props.value.tcname : ""}
+                                    placeholder={this.props.value ? this.props.value.cname : ""}
                                     onChange={(event) => {
                                         this.name = event.target.value;
                                     }}
