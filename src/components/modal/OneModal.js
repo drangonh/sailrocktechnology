@@ -11,6 +11,7 @@ class OneModal extends Component {
     state = {
         loading: false,
     };
+    name = "";
 
     /*
      *上传之前判断类型，返回true或者false；或者返回一个promise
@@ -37,13 +38,6 @@ class OneModal extends Component {
 
     }
 
-    /*增加分类*/
-    async addType() {
-        const param = {
-            "tcname": "wwwww"
-        };
-        const res = fetchPost("/shop/manager/top_category/add", param);
-    }
 
     render() {
         const {getFieldDecorator} = this.props.form;
@@ -83,7 +77,7 @@ class OneModal extends Component {
                     this.props.onCancel()
                 }
                 onOk={() =>
-                    this.props.onOk()
+                    this.props.onOk({"tcname": this.name})
                 }
             >
                 <div style={{minHeight: "200px"}}>
@@ -95,10 +89,13 @@ class OneModal extends Component {
                         >
                             {getFieldDecorator('name', {
                                 rules: [{
-                                    required: true, message: '请输入商品名称!'
+                                    required: true, message: '请输入分类名称!'
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="mobile"/>}/>
+                                <Input className="content_style"
+                                       onChange={(event) => {
+                                           this.name = event.target.value;
+                                       }} addonBefore={<Icon type="mobile"/>}/>
                             )}
                         </FormItem>
                     </Form>

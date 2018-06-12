@@ -2,6 +2,7 @@ import {Layout, Button, Table} from 'antd';
 import React, {Component} from 'react';
 import {fetchGet, fetchPost} from "../../client";
 import {typeCol} from "../DataSource";
+import OneModal from "../modal/OneModal";
 
 const {Content} = Layout;
 let allListArr = [];
@@ -13,10 +14,12 @@ export default class OneContent extends Component {
     state = {
         col: typeCol,
         data: [],
+        editOne: false
     };
+    modalName = "编辑";
 
     editIcon = <Button onClick={() => {
-        this.props.cancelEdit("")
+        this.cancelEdit("")
     }} icon="edit"/>
     deleteIcon = <Button icon="delete"/>
 
@@ -24,9 +27,7 @@ export default class OneContent extends Component {
 
     /*列表数据处理*/
     async getOneList() {
-        const res = await fetchGet("/shop/manager/top_category/get_all", "/1/10");
-        console.log("11111111111");
-        console.log(res);
+        const res = await fetchGet("/shop/manager/top_category/get_all", "/1/100000");
         if (res.status && res.data.data.length != 0) {
             const arr = res.data.data;
             let data = [];
@@ -39,18 +40,63 @@ export default class OneContent extends Component {
                     delete: this.deleteIcon,
                 })
             });
+            allListArr = data;
             this.setState({
                 data: data
             })
         }
     }
 
+    /*一级分类*/
+    cancleOne(name) {
+        if (name != "" && name) {
+            this.modalName = name
+        } else {
+            this.modalName = "编辑";
+        }
+
+        this.setState({
+            editOne: !this.state.editOne
+        })
+    }
+
+    /*增加分类*/
+    async addType(param) {
+        const res = await fetchPost("/shop/manager/top_category/add", JSON.stringify(param));
+        if (res.status) {
+            allListArr = allListArr.concat([{
+                key: this.state.data.length + 1,
+                num: this.state.data.length + 1,
+                name: param.tcname,
+                edit: this.editIcon,
+                delete: this.deleteIcon,
+            }]);
+            this.setState({
+                editOne: !this.state.editOne,
+                data: allListArr
+            })
+        }
+
+    }
+
     render() {
         return (
             <Content style={{margin: '0 16px', position: "relative"}}>
+                {/*一级modal*/}
+                <OneModal
+                    title={this.modalName}
+                    visible={this.state.editOne}
+                    onCancel={() => {
+                        this.setState({
+                            editOne: !this.state.editOne
+                        })
+                    }}
+                    onOk={(param) => this.addType(param)}
+                />
+
                 <Button
                     onClick={() => {
-                        this.props.cancelEdit("新增")
+                        this.cancleOne("新增")
                     }}
                     type="primary"
                     htmlType="submit"

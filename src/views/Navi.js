@@ -57,19 +57,6 @@ class Navi extends Component {
         })
     }
 
-    /*一级分类*/
-    cancleOne(name) {
-        if (name != "" && name) {
-            this.modalName = name
-        } else {
-            this.modalName = "编辑";
-        }
-
-        this.setState({
-            editOne: !this.state.editOne
-        })
-    }
-
     componentDidMount() {
     }
 
@@ -160,14 +147,6 @@ class Navi extends Component {
                     onOk={() => this.cancelEdit()}
                 />
 
-                {/*一级modal*/}
-                <OneModal
-                    title={this.modalName}
-                    visible={this.state.editOne}
-                    onCancel={() => this.cancleOne()}
-                    onOk={() => this.cancleOne()}
-                />
-
                 <Sider
                     trigger={null}
                     collapsible
@@ -231,7 +210,7 @@ class Navi extends Component {
                             <img src={logo} className="App-logo" alt="logo"/>
                         </span>
                     </Header>
-                    <OneContent cancelEdit={(name) => this.cancleOne(name)}/>
+                    <OneContent/>
                     <Footer style={{textAlign: 'center'}}>
                         {new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate()}&nbsp;&nbsp;&nbsp;&nbsp;{new Date().toLocaleTimeString()}
                     </Footer>
