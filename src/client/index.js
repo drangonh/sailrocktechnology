@@ -2,18 +2,19 @@ import 'whatwg-fetch'
 import 'es6-promise'
 import axios from "axios";
 import Qs from "qs";
+
 axios.defaults.withCredentials = true;
 const BaseUrl = "http://www.smarticloudnet.com";
-// const BaseUrl = "http://localhost:8080/swagger-ui.html";
+// const BaseUrl = "http://localhost:8080";
 
 //BaseUrl + url + params
 export function fetchGet(url, params) {
     return new Promise((resolve, reject) => {
         fetch(BaseUrl + url + params, {
             method: 'GET',
-            // credentials: "include"
+            credentials: "include",
             headers: {
-                "Accept": "*/*",
+                // "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8"
             },
         })
@@ -25,6 +26,7 @@ export function fetchGet(url, params) {
                 }
             })
             .then((response) => {
+                console.log(response);
                 resolve(response);
             })
             .catch((err) => {
@@ -45,7 +47,6 @@ export function fetchPost(url, formData) {
             // cache: 'default'
         })
             .then((response) => {
-                console.log(response);
                 if (response.ok) {
                     return response.json();
                 } else {

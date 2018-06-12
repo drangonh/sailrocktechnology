@@ -3,13 +3,17 @@ import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import logo from '../logo.svg';
 import EditModal from '../components/EditModal';
+import OneModal from '../components/modal/OneModal';
 import '../style/Navi.css'
 import '../style/view.css'
 import {typeCol, goodsCol, goods} from "../components/DataSource"
 import {fetchGet, fetchPost} from "../client"
+import {getOneList} from "../http/data";
+import OneContent from "../components/content/OneContent";
 
 const {Header, Content, Sider, Footer} = Layout;
 const SubMenu = Menu.SubMenu;
+let allListArr = [];
 
 class Navi extends Component {
     toggle = () => {
@@ -23,18 +27,16 @@ class Navi extends Component {
     }} icon="edit"/>
     deleteIcon = <Button icon="delete"/>
 
-    dataSource = [{
-        key: '1',
-        num: '1',
-        name: "咖啡豆",
-        edit: this.editIcon,
-        delete: this.deleteIcon,
-    }];
+    dataSource = [];
 
     state = {
         collapsed: false,
         mode: 'inline',
         editVisible: false,
+        editOne: false,
+        editTwo: false,
+        editTre: false,
+        editGoods: false,
         col: typeCol,
         data: this.dataSource,
         key: 1
@@ -42,7 +44,7 @@ class Navi extends Component {
     modalName = "编辑";
     editModal = Form.create()
 
-    /*取消编辑*/
+    /*商品取消编辑*/
     cancelEdit(name) {
         if (name != "" && name) {
             this.modalName = name
@@ -55,26 +57,89 @@ class Navi extends Component {
         })
     }
 
+    /*一级分类*/
+    cancleOne(name) {
+        if (name != "" && name) {
+            this.modalName = name
+        } else {
+            this.modalName = "编辑";
+        }
+
+        this.setState({
+            editOne: !this.state.editOne
+        })
+    }
+
     componentDidMount() {
-        this.getOneList();
     }
 
     /*获取一级分类列表*/
-    async getOneList() {
-        const res = await fetchGet("/shop/manager/top_category/get_all/1/10", "");
+
+    /*列表数据处理*/
+    async getList() {
+        const res = await fetchGet("/shop/manager/top_category/get_all", "/1/10");
+        console.log("11111111111");
         console.log(res);
+        if (res.status && res.data.data.length != 0) {
+            const arr = res.data.data;
+            let data = [];
+            arr.map((item, index) => {
+                data.push({
+                    key: index + 1,
+                    num: index + 1,
+                    name: item.tcname,
+                    edit: this.editIcon,
+                    delete: this.deleteIcon,
+                })
+            });
+            allListArr.push(data);
+            this.setState({
+                data: data
+            })
+        }
     }
 
     /*获取二级分类列表*/
     async getTwoList() {
-        const res = await fetchGet("/shop/manager/get_all/1/10", "");
+        const res = await fetchGet("/shop/manager/get_all", "/1/10");
+        console.log("22222222222222");
         console.log(res);
+        if (res.status && res.data.data.length != 0) {
+            const arr = res.data.data;
+            let data = [];
+            arr.map((item, index) => {
+                data.push({
+                    key: index + 1,
+                    num: index + 1,
+                    name: item.tcname,
+                    edit: this.editIcon,
+                    delete: this.deleteIcon,
+                })
+            });
+            allListArr.push(data);
+        }
+
     }
 
     /*获取三级分类列表*/
     async getThreeList() {
-        const res = await fetchGet("shop/manager/second_category/get_all/1/10", "");
+        const res = await fetchGet("shop/manager/second_category/get_all", "/1/10");
+        console.log("333333333333333");
         console.log(res);
+        if (res.status && res.data.data.length != 0) {
+            const arr = res.data.data;
+            let data = [];
+            arr.map((item, index) => {
+                data.push({
+                    key: index + 1,
+                    num: index + 1,
+                    name: item.tcname,
+                    edit: this.editIcon,
+                    delete: this.deleteIcon,
+                })
+            });
+            allListArr.push(data);
+        }
     }
 
     /*获取产品列表*/
@@ -93,6 +158,14 @@ class Navi extends Component {
                     visible={this.state.editVisible}
                     onCancel={() => this.cancelEdit()}
                     onOk={() => this.cancelEdit()}
+                />
+
+                {/*一级modal*/}
+                <OneModal
+                    title={this.modalName}
+                    visible={this.state.editOne}
+                    onCancel={() => this.cancleOne()}
+                    onOk={() => this.cancleOne()}
                 />
 
                 <Sider
@@ -119,7 +192,7 @@ class Navi extends Component {
                             } else {
                                 this.setState({
                                     col: typeCol,
-                                    data: this.dataSource
+                                    data: allListArr[item.key]
                                 })
                             }
                         }}
@@ -158,40 +231,7 @@ class Navi extends Component {
                             <img src={logo} className="App-logo" alt="logo"/>
                         </span>
                     </Header>
-                    <Content style={{margin: '0 16px', position: "relative"}}>
-                        <Button
-                            onClick={() => {
-                                this.cancelEdit("新增")
-                            }}
-                            type="primary"
-                            htmlType="submit"
-                            style={{
-                                width: '80px',
-                                position: "absolute",
-                                right: "50px",
-                                top: "50px",
-                                height: "30px",
-                            }}
-                        >
-                            新增
-                        </Button>
-
-                        <div style={{padding: 24, background: '#fff', marginTop: "16px"}}>
-                            <p style={{
-                                width: "100%",
-                                backgroundColor: "#CCC",
-                                textAlign: "center",
-                                lineHeight: "50px",
-                                height: "50px",
-                                fontSize: "medium",
-                                fontWeight: "bold"
-                            }}>一级分类</p>
-
-                            <Table rowKey={(info) => {
-                                console.log(info)
-                            }} dataSource={this.state.data} columns={this.state.col} scroll={{y: 500}}/>
-                        </div>
-                    </Content>
+                    <OneContent cancelEdit={(name) => this.cancleOne(name)}/>
                     <Footer style={{textAlign: 'center'}}>
                         {new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate()}&nbsp;&nbsp;&nbsp;&nbsp;{new Date().toLocaleTimeString()}
                     </Footer>
