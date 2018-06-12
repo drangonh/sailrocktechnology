@@ -88,7 +88,11 @@ export default class OneContent extends Component {
         } else if (selectedRowKeys.length == 1) {
             const id = selectedRowKeys[0];
             let res = await fetchGet("/shop/manager/top_category/delete", "/" + allListArr[id - 1].id + "");
-            this.getOneList();
+            if (res.status) {
+                this.getOneList();
+            } else {
+                message.info("删除失败！");
+            }
             this.setState({
                 selectedRowKeys: []
             })

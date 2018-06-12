@@ -94,8 +94,13 @@ export default class OneContent extends Component {
             message.info("请勾选要删除的项");
         } else if (selectedRowKeys.length == 1) {
             const id = selectedRowKeys[0];
-            let res = await fetchGet("/shop/manager/top_category/delete", "/" + allListArr[id - 1].id + "");
-            this.getOneList();
+            let res = await fetchGet("/shop/manager/delete", "/" + allListArr[id - 1].cid + "");
+            if (res.status) {
+                this.getOneList();
+            } else {
+                message.info("删除失败！");
+            }
+
             this.setState({
                 selectedRowKeys: []
             })
