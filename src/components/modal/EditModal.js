@@ -133,26 +133,29 @@ class EditModal extends Component {
                             )}
                         </FormItem>
 
-                        <FormItem
-                            {...formItemLayout}
-                            label="商品图片"
-                        >
-                            {getFieldDecorator('image', {
-                                rules: [{required: true, message: '请选择商品图片！'}]
-                            })(
-                                <Upload
-                                    name="avatar"
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    action="//jsonplaceholder.typicode.com/posts/"   //上传的地址，必填参数
-                                    beforeUpload={(file) => this.beforeUpload(file)}
-                                    onChange={(info) => this.handleChange(info)}
-                                >
-                                    {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
-                                </Upload>
-                            )}
-                        </FormItem>
+                        {this.props.title.indexOf("编辑") == -1 ?
+                            <FormItem
+                                {...formItemLayout}
+                                label="商品图片"
+                            >
+                                {getFieldDecorator('image', {
+                                    rules: [{required: true, message: '请选择商品图片！'}]
+                                })(
+                                    <Upload
+                                        name="avatar"
+                                        listType="picture-card"
+                                        className="avatar-uploader"
+                                        showUploadList={false}
+                                        action="//jsonplaceholder.typicode.com/posts/"   //上传的地址，必填参数
+                                        beforeUpload={(file) => this.beforeUpload(file)}
+                                        onChange={(info) => this.handleChange(info)}
+                                    >
+                                        {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
+                                    </Upload>
+                                )}
+                            </FormItem> : null}
+
+
                         <FormItem
                             {...formItemLayout}
                             label="所属的三级分类"

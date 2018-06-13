@@ -7,7 +7,7 @@ import {fetchPost} from "../../client";
 
 const FormItem = Form.Item;
 
-class DeleteModal extends Component {
+class EditImg extends Component {
     state = {
         loading: false,
     };
@@ -36,6 +36,22 @@ class DeleteModal extends Component {
     /*提交接口*/
     commitMsg() {
 
+    }
+
+
+    /*上传图片并且改变显示*/
+    handleChange = (info) => {
+        if (info.file.status === 'uploading') {
+            this.setState({loading: true});
+            return;
+        }
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+            this.getBase64(info.file.originFileObj, imageUrl => this.setState({
+                imageUrl,
+                loading: false,
+            }));
+        }
     }
 
 
@@ -71,7 +87,7 @@ class DeleteModal extends Component {
             <Modal
                 okText={"确认"}
                 cancelText={"取消"}
-                title={"删除"}
+                title={"编辑图片"}
                 visible={this.props.visible}
                 onCancel={() =>
                     this.props.onCancel()
@@ -80,9 +96,31 @@ class DeleteModal extends Component {
                     this.props.onOk()
                 }
             >
+                <Form onSubmit={this.handleSubmit}>
+                    <FormItem
+                        {...formItemLayout}
+                        label="商品图片"
+                    >
+                        {getFieldDecorator('image', {
+                            rules: [{required: true, message: '请选择商品图片！'}]
+                        })(
+                            <Upload
+                                name="avatar"
+                                listType="picture-card"
+                                className="avatar-uploader"
+                                showUploadList={false}
+                                action="//jsonplaceholder.typicode.com/posts/"   //上传的地址，必填参数
+                                beforeUpload={(file) => this.beforeUpload(file)}
+                                onChange={(info) => this.handleChange(info)}
+                            >
+                                {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
+                            </Upload>
+                        )}
+                    </FormItem>
+                </Form>
             </Modal>
         )
     }
 }
 
-export default Form.create()(DeleteModal)
+export default Form.create()(EditImg)

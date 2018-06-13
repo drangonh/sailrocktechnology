@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {fetchGet, fetchPostFormData} from "../../client";
 import {goodsCol} from "../DataSource";
 import EditModal from "../modal/EditModal";
+import EditImg from "../modal/EditImg";
 
 const {Content} = Layout;
 let allListArr = [];
@@ -16,6 +17,7 @@ export default class OneContent extends Component {
         col: goodsCol,
         data: [],
         editOne: false,
+        editImg: false,
         selectedRowKeys: []
     };
     modalName = "编辑";
@@ -65,7 +67,7 @@ export default class OneContent extends Component {
     cancleOne(name) {
         this.modalName = name
 
-        if (name == "编辑") {
+        if (name.indexOf("编辑") != -1) {
             const {selectedRowKeys} = this.state;
             if (selectedRowKeys.length == 0) {
                 message.info("请勾选要修改的项");
@@ -79,6 +81,22 @@ export default class OneContent extends Component {
         }
         this.setState({
             editOne: !this.state.editOne
+        })
+    }
+
+    editIMG() {
+        const {selectedRowKeys} = this.state;
+        if (selectedRowKeys.length == 0) {
+            message.info("请勾选要修改的项");
+            return
+        } else if (selectedRowKeys.length == 1) {
+
+        } else {
+            message.info("每次只能修改一项！");
+            return
+        }
+        this.setState({
+            editImg: !this.state.editImg
         })
     }
 
@@ -154,6 +172,12 @@ export default class OneContent extends Component {
         message.info('Click on Yes.');
     }
 
+    uploadImg() {
+        this.setState({
+            editImg: !this.state.editImg
+        })
+    }
+
     render() {
         const {selectedRowKeys} = this.state;
         const rowSelection = {
@@ -175,6 +199,17 @@ export default class OneContent extends Component {
                     }}
                     value={allListArr[id - 1]}
                     onOk={(param) => this.modalName == "新增" ? this.addType(param) : this.editType(param)}
+                />
+
+                <EditImg
+                    title={"编辑图片"}
+                    visible={this.state.editImg}
+                    onCancel={() => {
+                        this.setState({
+                            editImg: !this.state.editImg
+                        })
+                    }}
+                    onOk={(param) => this.uploadImg()}
                 />
 
                 <div style={{padding: 24, background: '#fff', marginTop: "16px"}}>
@@ -225,7 +260,7 @@ export default class OneContent extends Component {
 
                         <Button
                             onClick={() => {
-                                this.cancleOne("编辑")
+                                this.cancleOne("编辑内容")
                             }}
                             type="primary"
                             htmlType="submit"
@@ -235,7 +270,22 @@ export default class OneContent extends Component {
                                 marginLeft: "20px"
                             }}
                         >
-                            编辑
+                            编辑内容
+                        </Button>
+
+                        <Button
+                            onClick={() => {
+                                this.editIMG()
+                            }}
+                            type="primary"
+                            htmlType="submit"
+                            style={{
+                                width: '80px',
+                                height: "30px",
+                                marginLeft: "20px"
+                            }}
+                        >
+                            编辑图片
                         </Button>
                     </div>
 
