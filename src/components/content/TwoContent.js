@@ -9,8 +9,10 @@ let allListArr = [];
 export default class TwoContent extends Component {
     componentDidMount() {
         this.getOneList();
+        this.getType();
     }
 
+    typeArr = [];
     state = {
         col: typeCol,
         data: [],
@@ -39,10 +41,17 @@ export default class TwoContent extends Component {
                 })
             });
             allListArr = arr;
-            this.props.getAllData({"dataTwo": arr});
             this.setState({
                 data: data
             })
+        }
+    }
+
+    async getType() {
+        const res = await fetchGet("/shop/manager/top_category/get_all", "/1/100000");
+        if (res.status && res.data.data.length != 0) {
+            const arr = res.data.data;
+            this.typeArr = arr;
         }
     }
 
@@ -150,7 +159,7 @@ export default class TwoContent extends Component {
             <Content style={{margin: '0 16px', position: "relative"}}>
                 {/*一级modal*/}
                 <TwoModal
-                    oneType={this.props.oneType}
+                    oneType={this.typeArr}
                     title={this.modalName}
                     visible={this.state.editOne}
                     onCancel={() => {

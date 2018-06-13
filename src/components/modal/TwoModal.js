@@ -16,7 +16,7 @@ class TwoModal extends Component {
 
     /*选择框*/
     changeHot(value) {
-        this.typeId = this.props.oneType.dataOne[value.replace("oneType", "")].id
+        this.typeId = this.props.oneType[value.replace("oneType", "")].id
     }
 
 
@@ -91,7 +91,7 @@ class TwoModal extends Component {
                                     onChange={(value) => this.changeHot(value)
                                     }>
 
-                                    {this.props.oneType.dataOne.map((item, index) => {
+                                    {this.props.oneType.map((item, index) => {
                                         return <Option
                                             key={"oneType" + index}
                                             value={"oneType" + index}

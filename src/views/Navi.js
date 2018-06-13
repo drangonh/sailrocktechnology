@@ -32,10 +32,6 @@ class Navi extends Component {
     componentDidMount() {
     }
 
-    getAllData(obj) {
-        allListArr.push(obj);
-    }
-
     render() {
         return (
             <Layout className="App">
@@ -101,27 +97,27 @@ class Navi extends Component {
                     </Header>
                     {
                         this.state.key == 1 ?
-                            <OneContent getAllData={(arr) => this.getAllData(arr)}/> :
+                            <OneContent/> :
                             null
                     }
 
                     {
                         this.state.key == 2 ?
-                            <TwoContent oneType={allListArr[0]} getAllData={(arr) => this.getAllData(arr)}/>
+                            <TwoContent/>
                             :
                             null
                     }
 
                     {
                         this.state.key == 3 ?
-                            <ThrContent oneType={allListArr[0]} getAllData={(arr) => this.getAllData(arr)}/>
+                            <ThrContent/>
                             :
                             null
                     }
 
                     {
                         this.state.key == 4 ?
-                            <GoodsContent oneType={allListArr[0]} getAllData={(arr) => this.getAllData(arr)}/>
+                            <GoodsContent/>
                             :
                             null
                     }

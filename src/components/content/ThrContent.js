@@ -2,13 +2,14 @@ import {Layout, Button, Table, Popconfirm, message} from 'antd';
 import React, {Component} from 'react';
 import {fetchGet, fetchPost} from "../../client";
 import {typeCol} from "../DataSource";
-import TwoModal from "../modal/TwoModal";
+import ThrModal from "../modal/ThrModal";
 
 const {Content} = Layout;
 let allListArr = [];
 export default class ThrContent extends Component {
     componentDidMount() {
         this.getOneList();
+        this.getType();
     }
 
     state = {
@@ -18,7 +19,7 @@ export default class ThrContent extends Component {
         selectedRowKeys: []
     };
     modalName = "编辑";
-
+    typeArr = [];
     editIcon = <Button onClick={() => {
         this.cancleOne("")
     }} icon="edit"/>
@@ -39,10 +40,17 @@ export default class ThrContent extends Component {
                 })
             });
             allListArr = arr;
-            this.props.getAllData({"dataThr": arr});
             this.setState({
                 data: data
             })
+        }
+    }
+
+    async getType() {
+        const res = await fetchGet("/shop/manager/get_all", "/1/100000");
+        if (res.status && res.data.data.length != 0) {
+            const arr = res.data.data;
+            this.typeArr = arr;
         }
     }
 
@@ -149,8 +157,8 @@ export default class ThrContent extends Component {
         return (
             <Content style={{margin: '0 16px', position: "relative"}}>
                 {/*一级modal*/}
-                <TwoModal
-                    oneType={this.props.oneType}
+                <ThrModal
+                    oneType={this.typeArr}
                     title={this.modalName}
                     visible={this.state.editOne}
                     onCancel={() => {

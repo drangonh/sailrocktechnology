@@ -16,7 +16,7 @@ class ThrModal extends Component {
 
     /*选择框*/
     changeHot(value) {
-        this.typeId = this.props.oneType.dataOne[value.replace("oneType", "")].id
+        this.typeId = this.props.oneType[value.replace("oneType", "")].id
     }
 
 
@@ -57,7 +57,7 @@ class ThrModal extends Component {
                     <Form onSubmit={this.handleSubmit}>
                         <FormItem
                             {...formItemLayout}
-                            label="二级分类名称"
+                            label="三级分类名称"
                         >
                             {getFieldDecorator('name', {
                                 rules: [{
@@ -77,11 +77,11 @@ class ThrModal extends Component {
 
                         <FormItem
                             {...formItemLayout}
-                            label="所属的一级分类"
+                            label="所属的二级分类"
                         >
                             {getFieldDecorator('class', {
                                 rules: [{
-                                    required: true, message: '请选择所属的一级分类'
+                                    required: true, message: '请选择所属的二级分类'
                                 }, {
                                     validator: this.checkPassword
                                 }]
@@ -91,12 +91,12 @@ class ThrModal extends Component {
                                     onChange={(value) => this.changeHot(value)
                                     }>
 
-                                    {this.props.oneType.dataOne.map((item, index) => {
+                                    {this.props.oneType.map((item, index) => {
                                         return <Option
                                             key={"oneType" + index}
                                             value={"oneType" + index}
                                         >
-                                            {item.tcname}
+                                            {item.cname}
                                         </Option>
                                     })}
                                 </Select>
