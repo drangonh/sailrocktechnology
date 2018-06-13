@@ -10,6 +10,7 @@ class EditModal extends Component {
     state = {
         loading: false,
     };
+    obj = this.props.oneList;
 
     /*
      *上传之前判断类型，返回true或者false；或者返回一个promise
@@ -64,6 +65,7 @@ class EditModal extends Component {
     }
 
     render() {
+        this.obj = this.props.oneList;
         const {getFieldDecorator} = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -101,7 +103,7 @@ class EditModal extends Component {
                     this.props.onCancel()
                 }
                 onOk={() =>
-                    this.props.onOk()
+                    this.props.onOk(this.obj)
                 }
             >
                 <div style={{minHeight: "500px"}}>
@@ -117,6 +119,9 @@ class EditModal extends Component {
                                 }]
                             })(
                                 <Input
+                                    onChange={(event) => {
+                                        this.obj.pname = event.target.value
+                                    }}
                                     placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.pname : ""}
                                     className="content_style" addonBefore={<Icon type="mobile"/>}/>
                             )}
@@ -132,6 +137,9 @@ class EditModal extends Component {
                                 }]
                             })(
                                 <Input
+                                    onChange={(event) => {
+                                        this.obj.marketPrice = event.target.value
+                                    }}
                                     placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.marketPrice : ""}
                                     type={"number"} className="content_style" addonBefore={<Icon type="mobile"/>}/>
                             )}
@@ -173,8 +181,9 @@ class EditModal extends Component {
                             })(
                                 <Select
                                     placeholder="请选择分类！"
-                                    onChange={(value) => this.changeHot(value)
-                                    }>
+                                    onChange={(value) => {
+                                        this.obj.csid = this.props.oneType[value.replace("oneType", "")].csid
+                                    }}>
 
                                     {this.props.oneType.map((item, index) => {
                                         return <Option
@@ -200,6 +209,9 @@ class EditModal extends Component {
                                 }]
                             })(
                                 <Input
+                                    onChange={(event) => {
+                                        this.obj.pdesc = event.target.value
+                                    }}
                                     placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.pdesc : ""}
                                     className="content_style" addonBefore={<Icon type="lock"/>}/>
                             )}
@@ -218,9 +230,15 @@ class EditModal extends Component {
                                 }]
                             })(
                                 <Select defaultValue="否" style={{width: 120}}
-                                        onChange={(value) => this.changeHot(value)}>
-                                    <Option value="jack">是</Option>
-                                    <Option value="lucy">否</Option>
+                                        onChange={(value) => {
+                                            if (value == "index0") {
+                                                this.obj.isHot = 1;
+                                            } else {
+                                                this.obj.isHot = 0;
+                                            }
+                                        }}>
+                                    <Option value="index0">是</Option>
+                                    <Option value="index1">否</Option>
                                 </Select>
                             )}
                         </FormItem>
@@ -238,6 +256,9 @@ class EditModal extends Component {
                                 }]
                             })(
                                 <Input
+                                    onChange={(event) => {
+                                        this.obj.shopPrice = event.target.value;
+                                    }}
                                     placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.shopPrice : ""}
                                     className="content_style" addonBefore={<Icon type="lock"/>} type="number"/>
                             )}
@@ -256,6 +277,9 @@ class EditModal extends Component {
                                 }]
                             })(
                                 <Input
+                                    onChange={(event) => {
+                                        this.obj.inventory = event.target.value;
+                                    }}
                                     placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.inventory : ""}
                                     className="content_style" addonBefore={<Icon type="lock"/>} type="number"/>
                             )}

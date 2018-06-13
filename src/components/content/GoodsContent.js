@@ -1,6 +1,6 @@
 import {Layout, Button, Table, Popconfirm, message} from 'antd';
 import React, {Component} from 'react';
-import {fetchGet, fetchPostFormData} from "../../client";
+import {fetchGet, fetchPost, fetchPostFormData} from "../../client";
 import {goodsCol} from "../DataSource";
 import EditModal from "../modal/EditModal";
 import EditImg from "../modal/EditImg";
@@ -148,14 +148,17 @@ export default class OneContent extends Component {
         const {selectedRowKeys} = this.state;
         const id = selectedRowKeys[0];
         const param = {
-            "cname": name.cname,
-            "cid": allListArr[id - 1].cid,
-            "discount": 0,
-            "privilegetime": "2018-6-12",
-            "tcid": 0,
+            "pid": name.pid,
+            "pname": name.pname,
+            "marketPrice": name.marketPrice,
+            "shopPrice": name.shopPrice,
+            "inventory": name.inventory,
+            "pdesc": name.pdesc,
+            "isHot": name.isHot,
+            "pdate": name.pdate,
+            "csid": name.csid,
         };
-
-        let res = await fetchPostFormData("/shop/manager/product/update", JSON.stringify(param));
+        let res = await fetchPost("/shop/manager/product/update", JSON.stringify(param));
         this.getOneList();
         this.setState({
             selectedRowKeys: [],
