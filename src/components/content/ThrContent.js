@@ -118,8 +118,8 @@ export default class OneContent extends Component {
             "cname": name.cname,
             "cid": allListArr[id - 1].cid,
             "discount": 0,
-            "privilegetime": name.privilegetime,
-            "tcid": name.tcid,
+            "privilegetime": "2018-6-12",
+            "tcid": 0,
         };
 
         let res = await fetchPost("/shop/manager/update", JSON.stringify(param));
