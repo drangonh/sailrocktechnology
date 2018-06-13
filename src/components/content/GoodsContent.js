@@ -1,8 +1,8 @@
 import {Layout, Button, Table, Popconfirm, message} from 'antd';
 import React, {Component} from 'react';
 import {fetchGet, fetchPost} from "../../client";
-import {typeCol} from "../DataSource";
-import TwoModal from "../modal/TwoModal";
+import {goodsCol} from "../DataSource";
+import EditModal from "../modal/EditModal";
 
 const {Content} = Layout;
 let allListArr = [];
@@ -12,7 +12,7 @@ export default class OneContent extends Component {
     }
 
     state = {
-        col: typeCol,
+        col: goodsCol,
         data: [],
         editOne: false,
         selectedRowKeys: []
@@ -27,7 +27,7 @@ export default class OneContent extends Component {
 
     /*列表数据处理*/
     async getOneList() {
-        const res = await fetchGet("/shop/manager/get_all", "/1/100000");
+        const res = await fetchGet("/shop/manager/product/get_all", "/1/100000");
         if (res.status && res.data.data.length != 0) {
             const arr = res.data.data;
             let data = [];
@@ -35,7 +35,14 @@ export default class OneContent extends Component {
                 data.push({
                     key: index + 1,
                     num: index + 1,
-                    name: item.cname
+                    picture: {
+                        img: item.image,
+                        des: item.pdesc
+                    },
+                    name: item.pname,
+                    price: item.shopPrice,
+                    storage: item.inventory,
+                    isHot: !item.isHot || item.isHot == "否" ? "否" : "是",
                 })
             });
             allListArr = arr;
@@ -148,7 +155,7 @@ export default class OneContent extends Component {
         return (
             <Content style={{margin: '0 16px', position: "relative"}}>
                 {/*一级modal*/}
-                <TwoModal
+                <EditModal
                     oneType={this.props.oneType}
                     title={this.modalName}
                     visible={this.state.editOne}
