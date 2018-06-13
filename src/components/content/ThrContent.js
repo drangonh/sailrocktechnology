@@ -123,14 +123,11 @@ export default class ThrContent extends Component {
         const {selectedRowKeys} = this.state;
         const id = selectedRowKeys[0];
         const param = {
-            "cname": name.cname,
-            "cid": allListArr[id - 1].cid,
-            "discount": 0,
-            "privilegetime": "2018-6-12",
-            "tcid": 0,
+            "cid": name.cid,
+            "csname": name.csname,
+            "csid": allListArr[id - 1].csid
         };
-
-        let res = await fetchPost("/shop/manager/update", JSON.stringify(param));
+        let res = await fetchPost("/shop/manager/second_category/update", JSON.stringify(param));
         this.getOneList();
         this.setState({
             selectedRowKeys: [],

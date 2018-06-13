@@ -63,7 +63,7 @@ class ThrModal extends Component {
                                 }]
                             })(
                                 <Input
-                                    placeholder={this.props.value ? this.props.value.cname : ""}
+                                    placeholder={this.props.value ? this.props.value.csname : ""}
                                     onChange={(event) => {
                                         this.name = event.target.value;
                                     }}
