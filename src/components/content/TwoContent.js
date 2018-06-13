@@ -112,12 +112,11 @@ export default class OneContent extends Component {
 
     /*编辑分类*/
     async editType(name) {
-        alert(JSON.stringify(name));
         const {selectedRowKeys} = this.state;
         const id = selectedRowKeys[0];
         const param = {
             "cname": name.cname,
-            "cid": name.tcid,
+            "cid": allListArr[id - 1].cid,
             "discount": 0,
             "privilegetime": "2018-6-12",
             "tcid": 0,
