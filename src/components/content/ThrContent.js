@@ -102,7 +102,7 @@ export default class ThrContent extends Component {
             message.info("请勾选要删除的项");
         } else if (selectedRowKeys.length == 1) {
             const id = selectedRowKeys[0];
-            let res = await fetchGet("/shop/manager/delete", "/" + allListArr[id - 1].cid + "");
+            let res = await fetchGet("/shop/manager/second_category/delete", "/" + allListArr[id - 1].csid + "");
             if (res.status) {
                 this.getOneList();
             } else {
