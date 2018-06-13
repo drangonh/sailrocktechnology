@@ -9,6 +9,7 @@ let allListArr = [];
 export default class OneContent extends Component {
     componentDidMount() {
         this.getOneList();
+        this.getType();
     }
 
     state = {
@@ -18,7 +19,7 @@ export default class OneContent extends Component {
         selectedRowKeys: []
     };
     modalName = "编辑";
-
+    typeArr = [];
     editIcon = <Button onClick={() => {
         this.cancleOne("")
     }} icon="edit"/>
@@ -52,6 +53,14 @@ export default class OneContent extends Component {
         }
     }
 
+    async getType() {
+        const res = await fetchGet("/shop/manager/second_category/get_all", "/1/100000");
+        if (res.status && res.data.data.length != 0) {
+            const arr = res.data.data;
+            this.typeArr = arr;
+        }
+    }
+
     /*一级分类*/
     cancleOne(name) {
         this.modalName = name
@@ -82,7 +91,7 @@ export default class OneContent extends Component {
             })
             return
         }
-        const res = await fetchPost("/shop/manager/add", JSON.stringify(param));
+        const res = await fetchPost("/shop/manager/product/add", JSON.stringify(param));
         if (res.status) {
             this.getOneList();
         } else {
@@ -100,7 +109,7 @@ export default class OneContent extends Component {
             message.info("请勾选要删除的项");
         } else if (selectedRowKeys.length == 1) {
             const id = selectedRowKeys[0];
-            let res = await fetchGet("/shop/manager/delete", "/" + allListArr[id - 1].cid + "");
+            let res = await fetchGet("/shop/manager/product/delete", "/" + allListArr[id - 1].pid + "");
             if (res.status) {
                 this.getOneList();
             } else {
@@ -128,7 +137,7 @@ export default class OneContent extends Component {
             "tcid": 0,
         };
 
-        let res = await fetchPost("/shop/manager/update", JSON.stringify(param));
+        let res = await fetchPost("/shop/manager/product/update", JSON.stringify(param));
         this.getOneList();
         this.setState({
             selectedRowKeys: [],
@@ -156,7 +165,7 @@ export default class OneContent extends Component {
             <Content style={{margin: '0 16px', position: "relative"}}>
                 {/*一级modal*/}
                 <EditModal
-                    oneType={this.props.oneType}
+                    oneType={this.typeArr}
                     title={this.modalName}
                     visible={this.state.editOne}
                     onCancel={() => {

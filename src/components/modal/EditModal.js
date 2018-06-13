@@ -129,7 +129,7 @@ class EditModal extends Component {
                                     required: true, message: '请输入市场价格!'
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="mobile"/>}/>
+                                <Input type={"number"} className="content_style" addonBefore={<Icon type="mobile"/>}/>
                             )}
                         </FormItem>
 
@@ -155,19 +155,28 @@ class EditModal extends Component {
                         </FormItem>
                         <FormItem
                             {...formItemLayout}
-                            label="所属的二级分类"
+                            label="所属的三级分类"
                         >
                             {getFieldDecorator('class', {
                                 rules: [{
-                                    required: true, message: '请选择所属的二级分类'
+                                    required: true, message: '请选择所属的三级分类'
                                 }, {
                                     validator: this.checkPassword
                                 }]
                             })(
-                                <Select defaultValue="翡翠" style={{width: 120}}
-                                        onChange={(value) => this.changeHot(value)}>
-                                    <Option value="jack">南红</Option>
-                                    <Option value="lucy">玉雕</Option>
+                                <Select
+                                    placeholder="请选择分类！"
+                                    onChange={(value) => this.changeHot(value)
+                                    }>
+
+                                    {this.props.oneType.map((item, index) => {
+                                        return <Option
+                                            key={"oneType" + index}
+                                            value={"oneType" + index}
+                                        >
+                                            {item.csname}
+                                        </Option>
+                                    })}
                                 </Select>
                             )}
                         </FormItem>
