@@ -184,12 +184,13 @@ export default class OneContent extends Component {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
-        const id = selectedRowKeys[0];
+        const id = selectedRowKeys.length != 0 ? selectedRowKeys[0] : null;
         return (
             <Content style={{margin: '0 16px', position: "relative"}}>
                 {/*一级modal*/}
                 <EditModal
                     oneType={this.typeArr}
+                    oneList={id ? allListArr[id - 1] : {}}
                     title={this.modalName}
                     visible={this.state.editOne}
                     onCancel={() => {

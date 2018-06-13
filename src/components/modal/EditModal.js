@@ -116,7 +116,9 @@ class EditModal extends Component {
                                     required: true, message: '请输入商品名称!'
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="mobile"/>}/>
+                                <Input
+                                    placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.pname : ""}
+                                    className="content_style" addonBefore={<Icon type="mobile"/>}/>
                             )}
                         </FormItem>
 
@@ -129,7 +131,9 @@ class EditModal extends Component {
                                     required: true, message: '请输入市场价格!'
                                 }]
                             })(
-                                <Input type={"number"} className="content_style" addonBefore={<Icon type="mobile"/>}/>
+                                <Input
+                                    placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.marketPrice : ""}
+                                    type={"number"} className="content_style" addonBefore={<Icon type="mobile"/>}/>
                             )}
                         </FormItem>
 
@@ -195,7 +199,9 @@ class EditModal extends Component {
                                     validator: this.checkPassword
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="lock"/>} type="password"/>
+                                <Input
+                                    placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.pdesc : ""}
+                                    className="content_style" addonBefore={<Icon type="lock"/>}/>
                             )}
                         </FormItem>
 
@@ -231,7 +237,9 @@ class EditModal extends Component {
                                     validator: this.checkPassword
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="lock"/>} type="password"/>
+                                <Input
+                                    placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.shopPrice : ""}
+                                    className="content_style" addonBefore={<Icon type="lock"/>} type="number"/>
                             )}
                         </FormItem>
 
@@ -247,7 +255,9 @@ class EditModal extends Component {
                                     validator: this.checkPassword
                                 }]
                             })(
-                                <Input className="content_style" addonBefore={<Icon type="lock"/>} type="password"/>
+                                <Input
+                                    placeholder={JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.inventory : ""}
+                                    className="content_style" addonBefore={<Icon type="lock"/>} type="number"/>
                             )}
                         </FormItem>
                     </Form>
