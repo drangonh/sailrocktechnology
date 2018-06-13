@@ -1,6 +1,6 @@
 import {Layout, Button, Table, Popconfirm, message} from 'antd';
 import React, {Component} from 'react';
-import {fetchGet, fetchPost} from "../../client";
+import {fetchGet, fetchPostFormData} from "../../client";
 import {goodsCol} from "../DataSource";
 import EditModal from "../modal/EditModal";
 
@@ -91,7 +91,7 @@ export default class OneContent extends Component {
             })
             return
         }
-        const res = await fetchPost("/shop/manager/product/add", JSON.stringify(param));
+        const res = await fetchPostFormData("/shop/manager/product/add", JSON.stringify(param));
         if (res.status) {
             this.getOneList();
         } else {
@@ -137,7 +137,7 @@ export default class OneContent extends Component {
             "tcid": 0,
         };
 
-        let res = await fetchPost("/shop/manager/product/update", JSON.stringify(param));
+        let res = await fetchPostFormData("/shop/manager/product/update", JSON.stringify(param));
         this.getOneList();
         this.setState({
             selectedRowKeys: [],
