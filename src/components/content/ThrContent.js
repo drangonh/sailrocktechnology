@@ -77,14 +77,14 @@ export default class ThrContent extends Component {
 
     /*增加分类*/
     async addType(param) {
-        if (param.cname == "") {
+        if (param.csname == "") {
             message.info("请输入分类名称！");
             this.setState({
                 editOne: !this.state.editOne,
             })
             return
         }
-        const res = await fetchPost("/shop/manager/add", JSON.stringify(param));
+        const res = await fetchPost("/shop/manager/second_category/add", JSON.stringify(param));
         if (res.status) {
             this.getOneList();
         } else {

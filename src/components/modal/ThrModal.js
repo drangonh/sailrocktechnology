@@ -16,7 +16,7 @@ class ThrModal extends Component {
 
     /*选择框*/
     changeHot(value) {
-        this.typeId = this.props.oneType[value.replace("oneType", "")].id
+        this.typeId = this.props.oneType[value.replace("oneType", "")].cid
     }
 
 
@@ -45,10 +45,8 @@ class ThrModal extends Component {
                 }
                 onOk={() => {
                     this.props.onOk({
-                        "cname": this.name,
-                        "discount": 0,
-                        "privilegetime": new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(),
-                        "tcid": this.typeId
+                        "cid": this.typeId,
+                        "csname": this.name
                     })
                 }}
             >
