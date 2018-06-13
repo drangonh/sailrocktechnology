@@ -2,7 +2,7 @@ import {Layout, Menu, Breadcrumb, Icon, Table, Button, Modal, Form} from 'antd';
 import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import logo from '../logo.svg';
-import EditModal from '../components/EditModal';
+import EditModal from '../components/modal/EditModal';
 import OneModal from '../components/modal/OneModal';
 import '../style/Navi.css'
 import '../style/view.css'
@@ -11,6 +11,8 @@ import {fetchGet, fetchPost} from "../client"
 import {getOneList} from "../http/data";
 import OneContent from "../components/content/OneContent";
 import TwoContent from "../components/content/TwoContent";
+import ThrContent from "../components/content/ThrContent";
+import GoodsContent from "../components/content/GoodsContent";
 
 const {Header, Content, Sider, Footer} = Layout;
 const SubMenu = Menu.SubMenu;
@@ -106,6 +108,20 @@ class Navi extends Component {
                     {
                         this.state.key == 2 ?
                             <TwoContent oneType={allListArr[0]} getAllData={(arr) => this.getAllData(arr)}/>
+                            :
+                            null
+                    }
+
+                    {
+                        this.state.key == 3 ?
+                            <ThrContent oneType={allListArr[0]} getAllData={(arr) => this.getAllData(arr)}/>
+                            :
+                            null
+                    }
+
+                    {
+                        this.state.key == 4 ?
+                            <GoodsContent oneType={allListArr[0]} getAllData={(arr) => this.getAllData(arr)}/>
                             :
                             null
                     }

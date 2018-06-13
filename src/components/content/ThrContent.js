@@ -6,7 +6,7 @@ import TwoModal from "../modal/TwoModal";
 
 const {Content} = Layout;
 let allListArr = [];
-export default class OneContent extends Component {
+export default class ThrContent extends Component {
     componentDidMount() {
         this.getOneList();
     }
@@ -27,7 +27,7 @@ export default class OneContent extends Component {
 
     /*列表数据处理*/
     async getOneList() {
-        const res = await fetchGet("/shop/manager/get_all", "/1/100000");
+        const res = await fetchGet("/shop/manager/second_category/get_all", "/1/100000");
         if (res.status && res.data.data.length != 0) {
             const arr = res.data.data;
             let data = [];
@@ -35,11 +35,11 @@ export default class OneContent extends Component {
                 data.push({
                     key: index + 1,
                     num: index + 1,
-                    name: item.cname
+                    name: item.csname
                 })
             });
             allListArr = arr;
-            this.props.getAllData({"dataOne": arr});
+            this.props.getAllData({"dataThr": arr});
             this.setState({
                 data: data
             })

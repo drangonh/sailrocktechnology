@@ -1,9 +1,8 @@
 import {Icon, Form, Input, Modal, Upload, message, Select} from 'antd';
 import React, {Component} from 'react';
 import 'antd/dist/antd.css';
-import logo from '../logo.svg';
-import '../style/Navi.css'
-import '../style/view.css'
+import '../../style/Navi.css'
+import '../../style/view.css'
 
 const FormItem = Form.Item;
 

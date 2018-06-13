@@ -7,7 +7,7 @@ import {fetchPost} from "../../client";
 
 const FormItem = Form.Item;
 
-class TwoModal extends Component {
+class ThrModal extends Component {
     state = {
         loading: false,
     };
@@ -109,4 +109,4 @@ class TwoModal extends Component {
     }
 }
 
-export default Form.create()(TwoModal)
+export default Form.create()(ThrModal)

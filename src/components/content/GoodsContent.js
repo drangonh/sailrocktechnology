@@ -6,7 +6,7 @@ import TwoModal from "../modal/TwoModal";
 
 const {Content} = Layout;
 let allListArr = [];
-export default class TwoContent extends Component {
+export default class OneContent extends Component {
     componentDidMount() {
         this.getOneList();
     }
@@ -39,7 +39,6 @@ export default class TwoContent extends Component {
                 })
             });
             allListArr = arr;
-            this.props.getAllData({"dataTwo": arr});
             this.setState({
                 data: data
             })
@@ -118,8 +117,8 @@ export default class TwoContent extends Component {
             "cname": name.cname,
             "cid": allListArr[id - 1].cid,
             "discount": 0,
-            "privilegetime": name.privilegetime,
-            "tcid": name.tcid,
+            "privilegetime": "2018-6-12",
+            "tcid": 0,
         };
 
         let res = await fetchPost("/shop/manager/update", JSON.stringify(param));
