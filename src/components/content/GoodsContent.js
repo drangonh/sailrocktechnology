@@ -175,6 +175,7 @@ export default class OneContent extends Component {
         message.info('Click on Yes.');
     }
 
+    /*编辑图片*/
     uploadImg() {
         this.setState({
             editImg: !this.state.editImg
