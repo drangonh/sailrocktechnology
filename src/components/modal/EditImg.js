@@ -64,6 +64,7 @@ class EditImg extends Component {
 
     /*上传图片并且改变显示*/
     handleUpload = () => {
+        this.props.onCancel()
         const {fileList} = this.state;
         const formData = new FormData();
         fileList.forEach((file) => {
@@ -84,12 +85,14 @@ class EditImg extends Component {
                     fileList: [],
                     uploading: false,
                 });
+                this.props.onOk(true)
                 message.success('上传成功');
             },
             error: () => {
                 this.setState({
                     uploading: false,
                 });
+                this.props.onOk(false)
                 message.error('上传失败');
             },
         });
@@ -135,7 +138,7 @@ class EditImg extends Component {
                     this.props.onCancel()
                 }}
                 onOk={() => {
-                    this.props.onOk()
+                    this.handleUpload()
                 }}
             >
                 <Upload {...props}>
@@ -143,15 +146,6 @@ class EditImg extends Component {
                         <Icon type="upload"/> Select File
                     </Button>
                 </Upload>
-                <Button
-                    className="upload-demo-start"
-                    type="primary"
-                    onClick={() => this.handleUpload()}
-                    disabled={false}
-                    loading={loading}
-                >
-                    {loading ? 'Uploading' : 'Start Upload'}
-                </Button>
             </Modal>
         )
     }

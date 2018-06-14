@@ -176,10 +176,13 @@ export default class OneContent extends Component {
     }
 
     /*编辑图片*/
-    uploadImg() {
-        this.setState({
-            editImg: !this.state.editImg
-        })
+    uploadImg(res) {
+        if (res) {
+            this.setState({
+                selectedRowKeys: []
+            });
+            this.getOneList()
+        }
     }
 
     render() {
