@@ -3,10 +3,7 @@ import '../style/App.css';
 import '../style/view.css';
 import createHistory from 'history/createHashHistory'
 import {Form, Input, Button, message} from 'antd';
-import {postLast, get, fetchGet, fetchPost} from "../client"
-import axios from "axios"
-import {getAjax, postAjax} from "../client/ajax"
-import Cookies from "js-cookie"
+import {fetchPost} from "../client"
 
 const FormItem = Form.Item;
 const history = createHistory();
