@@ -260,7 +260,7 @@ class EditModal extends Component {
                                     validator: this.checkPassword
                                 }]
                             })(
-                                <Select defaultValue="否" style={{width: 120}}
+                                <Select style={{width: 120}}
                                         onChange={(value) => {
                                             if (value == "index0") {
                                                 this.obj.isHot = 1;
