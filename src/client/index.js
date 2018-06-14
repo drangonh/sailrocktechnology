@@ -73,6 +73,8 @@ export function fetchPostFormData(url, formData) {
             credentials: 'include',
             headers: {
                 'Content-Type':'multipart/form-data',
+                "Accept":" application/json",
+                "type":"formData"
             },
             body: formData,
             // cache: 'default'

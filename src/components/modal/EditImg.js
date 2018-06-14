@@ -7,11 +7,14 @@ import {fetchPost} from "../../client";
 
 const FormItem = Form.Item;
 const baseUrl = "http://www.smarticloudnet.com";
+const imgFile = null;
 
 class EditImg extends Component {
     state = {
         loading: false,
-        imageUrl: ""
+        imageUrl: "",
+        upload: false,
+        formData: new FormData()
     };
     name = "";
 
@@ -19,6 +22,14 @@ class EditImg extends Component {
      *上传之前判断类型，返回true或者false；或者返回一个promise
      */
     beforeUpload(file) {
+        const reader = new FileReader();
+        const stream = reader.readAsDataURL(file);
+        this.getBase64(file, (result) => {
+            this.setState({
+                formData: this.state.formData.append("fileName", result)
+            })
+        });
+
         const isJPG = file.type === 'image/jpeg';
         if (!isJPG) {
             message.error('You can only upload JPG file!');
@@ -49,17 +60,28 @@ class EditImg extends Component {
 
     /*上传图片并且改变显示*/
     handleChange = (info) => {
-        console.log(info);
         if (info.file.status === 'uploading') {
-            this.setState({loading: true});
+            this.setState({
+                loading: true
+            });
             return;
         }
         if (info.file.status === 'done') {
+            console.log(this.state.formData)
+            console.log(info);
             // Get this url from response in real world.
-            this.getBase64(info.file.originFileObj, imageUrl => this.setState({
-                imageUrl,
+            this.getBase64(info.file.originFileObj, imageUrl => {
+                this.setState({
+                    imageUrl,
+                    loading: false,
+                    upload: true
+                }, message.info("上传成功！"))
+            });
+        } else {
+            this.setState({
                 loading: false,
-            }));
+                upload: true
+            }, message.info("上传失败！"));
         }
     }
 
@@ -99,12 +121,20 @@ class EditImg extends Component {
                 cancelText={"取消"}
                 title={"编辑图片"}
                 visible={this.props.visible}
-                onCancel={() =>
-                    this.props.onCancel()
-                }
-                onOk={() =>
-                    this.props.onOk()
-                }
+                onCancel={() => {
+                    if (this.state.upload) {
+                        this.props.onCancel()
+                    } else {
+                        message.info("请等待上传！");
+                    }
+                }}
+                onOk={() => {
+                    if (this.state.upload) {
+                        this.props.onOk()
+                    } else {
+                        message.info("请等待上传！");
+                    }
+                }}
             >
                 <Form onSubmit={this.handleSubmit}>
                     <FormItem
@@ -115,11 +145,12 @@ class EditImg extends Component {
                             rules: [{required: true, message: '请选择商品图片！'}]
                         })(
                             <Upload
+                                data={this.state.formData}
                                 name="avatar"
                                 listType="picture-card"
                                 className="avatar-uploader"
                                 showUploadList={false}
-                                action={this.state.url}   //上传的地址，必填参数
+                                action={url}   //上传的地址，必填参数
                                 beforeUpload={(file) => this.beforeUpload(file)}
                                 onChange={(info) => this.handleChange(info)}
                             >

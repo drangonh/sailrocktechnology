@@ -215,7 +215,7 @@ export default class OneContent extends Component {
                             editImg: !this.state.editImg
                         })
                     }}
-                    onOk={(param) => this.uploadImg()}
+                    onOk={(param) => this.uploadImg(param)}
                 />
 
                 <div style={{padding: 24, background: '#fff', marginTop: "16px"}}>
