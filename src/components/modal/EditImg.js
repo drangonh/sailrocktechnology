@@ -6,6 +6,7 @@ import '../../style/view.css'
 import {fetchPost} from "../../client";
 
 const FormItem = Form.Item;
+const baseUrl = "http://www.smarticloudnet.com";
 
 class EditImg extends Component {
     state = {
@@ -39,9 +40,16 @@ class EditImg extends Component {
 
     }
 
+    /*转base64*/
+    getBase64(img, callback) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result));
+        reader.readAsDataURL(img);
+    }
 
     /*上传图片并且改变显示*/
     handleChange = (info) => {
+        console.log(info);
         if (info.file.status === 'uploading') {
             this.setState({loading: true});
             return;
@@ -83,7 +91,8 @@ class EditImg extends Component {
         );
         const imageUrl = this.state.imageUrl;
         const Option = Select.Option;
-
+        const pid = JSON.stringify(this.props.oneList) != "{}" ? this.props.oneList.pid : "";
+        const url = "http://www.smarticloudnet.com/shop/manager/product/update_img?pid=" + pid;
         return (
             <Modal
                 okText={"确认"}
@@ -110,11 +119,12 @@ class EditImg extends Component {
                                 listType="picture-card"
                                 className="avatar-uploader"
                                 showUploadList={false}
-                                action="http://www.smarticloudnet.com/jsonplaceholder.typicode.com/posts/"   //上传的地址，必填参数
+                                action={this.state.url}   //上传的地址，必填参数
                                 beforeUpload={(file) => this.beforeUpload(file)}
                                 onChange={(info) => this.handleChange(info)}
                             >
-                                {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
+                                {imageUrl ? <img style={{width: "50px", height: "50px"}} src={imageUrl}
+                                                 alt="avatar"/> : uploadButton}
                             </Upload>
                         )}
                     </FormItem>
