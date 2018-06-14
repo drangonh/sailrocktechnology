@@ -201,7 +201,8 @@ export default class OneContent extends Component {
                     visible={this.state.editImg}
                     onCancel={() => {
                         this.setState({
-                            editImg: !this.state.editImg
+                            editImg: !this.state.editImg,
+                            selectedRowKeys: []
                         })
                     }}
                     onOk={(param) => this.uploadImg(param)}
