@@ -13,10 +13,10 @@ import OneContent from "../components/content/OneContent";
 import TwoContent from "../components/content/TwoContent";
 import ThrContent from "../components/content/ThrContent";
 import GoodsContent from "../components/content/GoodsContent";
+import Cookies from "js-cookie";
 
 const {Header, Content, Sider, Footer} = Layout;
 const SubMenu = Menu.SubMenu;
-
 /*记录所有的分类数据*/
 let allListArr = [];
 
@@ -24,12 +24,16 @@ class Navi extends Component {
     state = {
         collapsed: false,
         mode: 'inline',
-        key: 1
+        key: 1,
+        userName: ""
     };
     modalName = "编辑";
     editModal = Form.create()
 
     componentDidMount() {
+        this.setState({
+            userName: Cookies.get('userName')
+        })
     }
 
     render() {
@@ -42,7 +46,12 @@ class Navi extends Component {
                     collapsed={this.state.collapsed}
                 >
                     <div className="logo" style={{verticalAlign: "center"}}>
-                        <p style={{textAlign: "center", color: "red", height: "100%", lineHeight: "32px"}}>登录用户：黄龙</p>
+                        <p style={{
+                            textAlign: "center",
+                            color: "red",
+                            height: "100%",
+                            lineHeight: "32px"
+                        }}>登录用户：{this.state.userName}</p>
                     </div>
 
                     <Menu
@@ -91,9 +100,9 @@ class Navi extends Component {
                             />
                         </span>
                         <span style={{color: '#fff', paddingLeft: '2%', fontSize: '1.4em'}}>上海帆岩信息科技有限公司</span>
-                        <span style={{color: '#fff', float: 'right', paddingRight: '1%'}}>
+                        {/* <span style={{color: '#fff', float: 'right', paddingRight: '1%'}}>
                             <img src={logo} className="App-logo" alt="logo"/>
-                        </span>
+                        </span>*/}
                     </Header>
                     {
                         this.state.key == 1 ?

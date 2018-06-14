@@ -4,7 +4,7 @@ import '../style/view.css';
 import createHistory from 'history/createHashHistory'
 import {Form, Input, Button, message} from 'antd';
 import {fetchPost} from "../client"
-
+import Cookies from "js-cookie"
 const FormItem = Form.Item;
 const history = createHistory();
 
@@ -23,6 +23,7 @@ class Login extends Component {
         const data = await fetchPost("/shop/manager/user/login/" + this.userName + "/" + this.pwd + "", {});
         console.log(data);
         if (data.status) {
+            Cookies.set('userName', data.data.name);
             history.push('/index');
         } else {
             message.info(data.msg);
