@@ -11,55 +11,10 @@ class EditImg extends Component {
         super(props);
         this.state = {
             loading: false,
-            imageUrl: "",
-            upload: false,
-            formData: new FormData(),
             fileList: []
         };
-        this.name = "";
         this.pid = "";
         this.url = "http://www.smarticloudnet.com/shop/manager/product/update_img?pid=";
-    }
-
-
-    /*
-     *上传之前判断类型，返回true或者false；或者返回一个promise
-     */
-    beforeUpload(file) {
-        const reader = new FileReader();
-        const stream = reader.readAsDataURL(file);
-        this.getBase64(file, (result) => {
-            this.setState({
-                formData: this.state.formData.append("fileName", result)
-            })
-        });
-
-        const isJPG = file.type === 'image/jpeg';
-        if (!isJPG) {
-            message.error('You can only upload JPG file!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
-        }
-        return isJPG && isLt2M;
-    }
-
-    /*取消选中和取消输入框*/
-    cancelAllMsg() {
-
-    }
-
-    /*提交接口*/
-    commitMsg() {
-
-    }
-
-    /*转base64*/
-    getBase64(img, callback) {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
     }
 
     /*上传图片并且改变显示*/

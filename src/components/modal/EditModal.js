@@ -1,16 +1,44 @@
-import {Icon, Form, Input, Modal, Upload, message, Select} from 'antd';
+import {Icon, Form, Input, Modal, Upload, message, Select, Button} from 'antd';
 import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import '../../style/Navi.css'
 import '../../style/view.css'
+import reqwest from "reqwest";
 
 const FormItem = Form.Item;
+let pdate = "";
 
 class EditModal extends Component {
-    state = {
-        loading: false,
-    };
-    obj = this.props.oneList;
+    constructor(props) {
+        super(props);
+        this.getCurrentTimeFormat()
+        console.log(pdate);
+        this.url = "http://www.smarticloudnet.com/shop/manager/product/add?pname=";
+        this.state = {
+            loading: false,
+            fileList: []
+        };
+        this.obj = this.props.oneList;
+    }
+
+    getCurrentTimeFormat() {
+        let time = new Date();
+        let y = time.getFullYear();
+        let m = time.getMonth() + 1;
+        let d = time.getDate();
+        let h = time.getHours();
+        let mm = time.getMinutes();
+        let s = time.getSeconds();
+        let typeString = '-';
+
+        const t = y + typeString + this.add0(m) + typeString + this.add0(d) + ' ' + this.add0(h) + ':' + this.add0(mm) + ':' + this.add0(s);
+        pdate = t;
+    }
+
+    add0(m) {
+        return m < 10 ? '0' + m : m
+    }
+
 
     /*
      *上传之前判断类型，返回true或者false；或者返回一个promise
@@ -27,20 +55,6 @@ class EditModal extends Component {
         return isJPG && isLt2M;
     }
 
-    /*上传图片并且改变显示*/
-    handleChange = (info) => {
-        if (info.file.status === 'uploading') {
-            this.setState({loading: true});
-            return;
-        }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            this.getBase64(info.file.originFileObj, imageUrl => this.setState({
-                imageUrl,
-                loading: false,
-            }));
-        }
-    }
 
     /*转base64*/
     getBase64(img, callback) {
@@ -54,15 +68,49 @@ class EditModal extends Component {
         console.log(`selected ${value}`);
     }
 
-    /*取消选中和取消输入框*/
-    cancelAllMsg() {
+    /*上传图片并且改变显示*/
+    handleUpload = () => {
+        this.props.onCancel()
+        const {fileList} = this.state;
+        const formData = new FormData();
+        fileList.forEach((file) => {
+            formData.append('fileName', file);
+        });
 
-    }
+        this.setState({
+            uploading: true,
+        });
+        const url = this.url + this.obj.pname +
+            "&marketPric=" + this.obj.marketPrice +
+            "&shopPrice=" + this.obj.shopPrice +
+            "&inventory=" + this.obj.inventory +
+            "&pdesc=" + this.obj.pdesc +
+            "&isHot=" + this.obj.isHot +
+            "&pdate=" + pdate +
+            "&csid=" + this.obj.csid;
 
-    /*提交接口*/
-    commitMsg() {
-
-    }
+        reqwest({
+            url: url,
+            method: 'post',
+            processData: false,
+            data: formData,
+            success: () => {
+                this.setState({
+                    fileList: [],
+                    uploading: false,
+                });
+                this.props.onOk(true)
+                message.success('上传成功');
+            },
+            error: () => {
+                this.setState({
+                    uploading: false,
+                });
+                this.props.onOk(false)
+                message.error('上传失败');
+            },
+        });
+    };
 
     render() {
         this.obj = this.props.oneList;
@@ -77,21 +125,38 @@ class EditModal extends Component {
                 sm: {span: 16},
             },
         };
-        const tailFormItemLayout = {
-            wrapperCol: {
-                span: 14,
-                offset: 7
-            }
-        };
-
-        const uploadButton = (
-            <div>
-                <Icon type={this.state.loading ? 'loading' : 'plus'}/>
-                <div className="ant-upload-text">Upload</div>
-            </div>
-        );
         const imageUrl = this.state.imageUrl;
         const Option = Select.Option;
+        const {loading} = this.state;
+        const url = this.url + this.obj.pname +
+            "&marketPric=" + this.obj.marketPric +
+            "&shopPrice=" + this.obj.shopPrice +
+            "&inventory=" + this.obj.inventory +
+            "&pdesc=" + this.obj.pdesc +
+            "&isHot=" + this.obj.isHot +
+            "&pdate=" + pdate +
+            "&csid=" + this.obj.csid;
+
+        const props = {
+            action: url,
+            onRemove: (file) => {
+                this.setState(({fileList}) => {
+                    const index = fileList.indexOf(file);
+                    const newFileList = fileList.slice();
+                    newFileList.splice(index, 1);
+                    return {
+                        fileList: newFileList,
+                    };
+                });
+            },
+            beforeUpload: (file) => {
+                this.setState(({fileList}) => ({
+                    fileList: [...fileList, file],
+                }));
+                return false;
+            },
+            fileList: this.state.fileList,
+        };
 
         return (
             <Modal
@@ -102,9 +167,13 @@ class EditModal extends Component {
                 onCancel={() =>
                     this.props.onCancel()
                 }
-                onOk={() =>
-                    this.props.onOk(this.obj)
-                }
+                onOk={() => {
+                    if (this.props.title == "编辑内容") {
+                        this.props.onOk(this.obj)
+                    } else {
+                        this.handleUpload()
+                    }
+                }}
             >
                 <div style={{minHeight: "500px"}}>
 
@@ -148,25 +217,17 @@ class EditModal extends Component {
                         {this.props.title.indexOf("编辑") == -1 ?
                             <FormItem
                                 {...formItemLayout}
-                                label="商品图片"
+                                label="选择图片"
                             >
-                                {getFieldDecorator('image', {
-                                    rules: [{required: true, message: '请选择商品图片！'}]
-                                })(
-                                    <Upload
-                                        name="avatar"
-                                        listType="picture-card"
-                                        className="avatar-uploader"
-                                        showUploadList={false}
-                                        action="//jsonplaceholder.typicode.com/posts/"   //上传的地址，必填参数
-                                        beforeUpload={(file) => this.beforeUpload(file)}
-                                        onChange={(info) => this.handleChange(info)}
-                                    >
-                                        {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
-                                    </Upload>
-                                )}
-                            </FormItem> : null}
-
+                                {this.props.title.indexOf("编辑") == -1 ?
+                                    <Upload {...props}>
+                                        <Button>
+                                            <Icon type="upload"/> 选择图片
+                                        </Button>
+                                    </Upload> : null}
+                            </FormItem> :
+                            null
+                        }
 
                         <FormItem
                             {...formItemLayout}

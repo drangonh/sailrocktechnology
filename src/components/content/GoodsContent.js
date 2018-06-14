@@ -100,26 +100,6 @@ export default class OneContent extends Component {
         })
     }
 
-    /*增加分类*/
-    async addType(param) {
-        if (param.cname == "") {
-            message.info("请输入分类名称！");
-            this.setState({
-                editOne: !this.state.editOne,
-            })
-            return
-        }
-        const res = await fetchPostFormData("/shop/manager/product/add", JSON.stringify(param));
-        if (res.status) {
-            this.getOneList();
-        } else {
-            message.info("新增失败！");
-        }
-        this.setState({
-            editOne: !this.state.editOne,
-        })
-    }
-
     /*删除分类*/
     async deleteOne() {
         const {selectedRowKeys} = this.state;
@@ -206,7 +186,7 @@ export default class OneContent extends Component {
                         })
                     }}
                     value={allListArr[id - 1]}
-                    onOk={(param) => this.modalName == "新增" ? this.addType(param) : this.editType(param)}
+                    onOk={(param) => this.editType(param)}
                 />
 
                 <EditImg
