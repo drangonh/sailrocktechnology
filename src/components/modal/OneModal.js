@@ -38,6 +38,17 @@ class OneModal extends Component {
 
     }
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+        //关键代码，不过这样会带来一个问题，校验时无法显示提示信息,解决方案看第二篇博客
+        this.props.form.resetFields();
+    };
+
 
     render() {
         const {getFieldDecorator} = this.props.form;
@@ -73,12 +84,14 @@ class OneModal extends Component {
                 cancelText={"取消"}
                 title={this.props.title}
                 visible={this.props.visible}
-                onCancel={() =>
+                onCancel={() => {
+                    this.props.form.resetFields();
                     this.props.onCancel()
-                }
-                onOk={() =>
+                }}
+                onOk={() => {
+                    this.props.form.resetFields();
                     this.props.onOk({"tcname": this.name})
-                }
+                }}
             >
                 <div style={{minHeight: "200px"}}>
 
@@ -93,7 +106,7 @@ class OneModal extends Component {
                                 }]
                             })(
                                 <Input
-                                    placeholder={this.props.value ? this.props.value.tcname : ""}
+                                    placeholder={this.props.value && this.props.visible ? this.props.value.tcname : ""}
                                     onChange={(event) => {
                                         this.name = event.target.value;
                                     }}

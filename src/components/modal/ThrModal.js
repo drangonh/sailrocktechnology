@@ -40,10 +40,13 @@ class ThrModal extends Component {
                 cancelText={"取消"}
                 title={this.props.title}
                 visible={this.props.visible}
-                onCancel={() =>
+                onCancel={() => {
+                    this.props.form.resetFields();
                     this.props.onCancel()
-                }
+
+                }}
                 onOk={() => {
+                    this.props.form.resetFields();
                     this.props.onOk({
                         "cid": this.typeId,
                         "csname": this.name

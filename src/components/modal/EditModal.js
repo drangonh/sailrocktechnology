@@ -134,10 +134,12 @@ class EditModal extends Component {
                 cancelText={"取消"}
                 title={this.props.title}
                 visible={this.props.visible}
-                onCancel={() =>
+                onCancel={() => {
+                    this.props.form.resetFields();
                     this.props.onCancel()
-                }
+                }}
                 onOk={() => {
+                    this.props.form.resetFields();
                     if (this.props.title == "编辑内容") {
                         this.props.onOk(this.obj)
                     } else {

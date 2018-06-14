@@ -40,10 +40,12 @@ class TwoModal extends Component {
                 cancelText={"取消"}
                 title={this.props.title}
                 visible={this.props.visible}
-                onCancel={() =>
+                onCancel={() => {
+                    this.props.form.resetFields();
                     this.props.onCancel()
-                }
+                }}
                 onOk={() => {
+                    this.props.form.resetFields();
                     this.props.onOk({
                         "cname": this.name,
                         "discount": 0,
