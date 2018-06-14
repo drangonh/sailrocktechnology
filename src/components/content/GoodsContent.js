@@ -207,6 +207,7 @@ export default class OneContent extends Component {
                 />
 
                 <EditImg
+                    img={id ? allListArr[id - 1].image : ""}
                     title={"编辑图片"}
                     visible={this.state.editImg}
                     onCancel={() => {

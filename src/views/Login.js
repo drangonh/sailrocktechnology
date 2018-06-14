@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '../style/App.css';
 import '../style/view.css';
 import createHistory from 'history/createHashHistory'
-import {Form, Input, Button} from 'antd';
+import {Form, Input, Button, message} from 'antd';
 import {postLast, get, fetchGet, fetchPost} from "../client"
 import axios from "axios"
 import {getAjax, postAjax} from "../client/ajax"
@@ -28,7 +28,7 @@ class Login extends Component {
         if (data.status) {
             history.push('/index');
         } else {
-            alert(data.msg);
+            message.info(data.msg);
         }
     }
 
