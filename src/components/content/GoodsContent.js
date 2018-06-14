@@ -165,6 +165,12 @@ export default class OneContent extends Component {
         }
     }
 
+    addType(res) {
+        if (res) {
+            this.getOneList();
+        }
+    }
+
     render() {
         const {selectedRowKeys} = this.state;
         const rowSelection = {
@@ -186,7 +192,7 @@ export default class OneContent extends Component {
                         })
                     }}
                     value={allListArr[id - 1]}
-                    onOk={(param) => this.editType(param)}
+                    onOk={(param) => this.modalName == "新增" ? this.addType(param) : this.editType(param)}
                 />
 
                 <EditImg

@@ -12,7 +12,6 @@ class EditModal extends Component {
     constructor(props) {
         super(props);
         this.getCurrentTimeFormat()
-        console.log(pdate);
         this.url = "http://www.smarticloudnet.com/shop/manager/product/add?pname=";
         this.state = {
             loading: false,
@@ -37,35 +36,6 @@ class EditModal extends Component {
 
     add0(m) {
         return m < 10 ? '0' + m : m
-    }
-
-
-    /*
-     *上传之前判断类型，返回true或者false；或者返回一个promise
-     */
-    beforeUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        if (!isJPG) {
-            message.error('You can only upload JPG file!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
-        }
-        return isJPG && isLt2M;
-    }
-
-
-    /*转base64*/
-    getBase64(img, callback) {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
-    }
-
-    /*选择框*/
-    changeHot(value) {
-        console.log(`selected ${value}`);
     }
 
     /*上传图片并且改变显示*/
@@ -129,7 +99,7 @@ class EditModal extends Component {
         const Option = Select.Option;
         const {loading} = this.state;
         const url = this.url + this.obj.pname +
-            "&marketPric=" + this.obj.marketPric +
+            "&marketPric=" + this.obj.marketPrice +
             "&shopPrice=" + this.obj.shopPrice +
             "&inventory=" + this.obj.inventory +
             "&pdesc=" + this.obj.pdesc +
